@@ -1,30 +1,47 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+  <TopNav v-if="!hide" />
   <router-view />
+  <FooterBar v-if="!hide" />
+  <bottom-nav v-if="!hidden" />
 </template>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import BottomNav from '@/modules/macHiddle/components/navbar/BottomNav.vue';
+import TopNav from '@/modules/macHiddle/components/navbar/TopNav.vue'
+import FooterBar from '@/modules/macHiddle/components/navbar/FooterBar.vue'
+export default {
+  name: 'E-comApp',
+  components: {
+    BottomNav,
+    TopNav,
+    FooterBar
+  },
+  computed: {
+    hide() {
+      const hiddenPages = ['Category', '', 'LoginPage', 'RegistrationPage', 'ForgotPasswordPage']
+      return hiddenPages.includes(this.$route.name)
+    },
+    hidden() {
+      const hiddenPages = ['LoginPage', 'RegistrationPage', 'ForgotPasswordPage','ProductPage']
+      return hiddenPages.includes(this.$route.name)
+    },
+  }
+}
+</script>
+<style>
+:root {
+  --primary-color: #EDC3AB;
+  --secondary-color: #231F20;
 }
 
-nav {
-  padding: 30px;
+.smaller {
+  font-size: 12px;
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.truncate {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  max-height: 3em;
+  overflow: hidden;
 }
 </style>
