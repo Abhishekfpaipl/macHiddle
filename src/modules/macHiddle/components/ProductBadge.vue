@@ -1,11 +1,11 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <p class="fw-bold fs-5 border-top border-bottom p-2">Attributes</p>
+    <div class="container my-2">
+        <div class="row bg-white">
+            <p class="fw-bold border-bottom p-2">Attributes</p>
             <div v-for="(badge, index) in badges" :key="index" class="col-4 col-md-6 col-lg-4 mb-3">
                 <div class="text-center">
                     <div style="min-height: 35px;">
-                        <img :src="badge.image" class="rounded">
+                        <img :src="badge.image" style="height: 80px;object-fit: cover;" class="rounded">
                     </div>
                     <p class="text-muted smaller mb-0">{{ badge.details }}</p>
                 </div>
@@ -17,38 +17,38 @@
 <script>
 export default {
     name: 'ProductBadge',
-    // props: {
-    //     badges: Array
-    // },
+    props: {
+        badges: Array
+    },
     data() {
         return {
-            badges: [
-                {
-                    id: 1,
-                    image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Shipping-Block-New.png',
-                    details: 'Free shipping above Rs 950'
-                },
-                {
-                    id: 2,
-                    image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Dispatch-Block-New.png',
-                    details: 'Within 24-48 hours Fast Dispatches'
-                },
-                {
-                    id: 3,
-                    image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Secure-Block-New.png',
-                    details: 'Secure Payments'
-                },
-                {
-                    id: 4,
-                    image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Make-In-India-Block-New-1.png',
-                    details: 'Produce of India'
-                },
-                {
-                    id: 5,
-                    image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Hollistic-Block-New.png',
-                    details: 'Holistic Well-being'
-                },
-            ]
+            // badges: [
+            //     {
+            //         id: 1,
+            //         image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Shipping-Block-New.png',
+            //         details: 'Free shipping above Rs 950'
+            //     },
+            //     {
+            //         id: 2,
+            //         image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Dispatch-Block-New.png',
+            //         details: 'Within 24-48 hours Fast Dispatches'
+            //     },
+            //     {
+            //         id: 3,
+            //         image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Secure-Block-New.png',
+            //         details: 'Secure Payments'
+            //     },
+            //     {
+            //         id: 4,
+            //         image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Make-In-India-Block-New-1.png',
+            //         details: 'Produce of India'
+            //     },
+            //     {
+            //         id: 5,
+            //         image: 'https://staticin.sadhguru.org/in/pub/media/wysiwyg/Hollistic-Block-New.png',
+            //         details: 'Holistic Well-being'
+            //     },
+            // ]
         }
     },
 }

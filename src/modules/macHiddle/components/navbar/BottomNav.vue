@@ -4,7 +4,8 @@
         <div class="container-fluid">
             <div class="navbar-nav d-flex flex-row w-100 justify-content-around ">
                 <div class="nav-item" v-for="(link, linkIndex) in links" :key="linkIndex">
-                    <router-link :to="link.path" class="nav-link text-secondary" :class="{ 'active': isLinkActive(link) }">
+                    <router-link :to="link.path" class="nav-link text-secondary"
+                        :class="{ 'active': isLinkActive(link) }">
                         <div class="d-flex flex-column align-items-center fw-bold">
                             <i class="bi" :class="link.icon"></i>
                             <div style="font-size: 0.75rem;">{{ link.name }}</div>
@@ -23,9 +24,9 @@ export default {
         return {
             links: [
                 {
-                    path: '/dashboard',
+                    path: '/',
                     icon: 'bi-shop-window',
-                    name: 'Home'
+                    name: 'Shop'
                 },
                 {
                     path: '/categories',
@@ -35,18 +36,23 @@ export default {
                 {
                     path: '/wishlist',
                     icon: 'bi-heart',
-                    name: 'Favourite'
+                    name: 'Wishlist'
                 },
                 {
-                    path: '/support',
-                    icon: 'bi-chat',
-                    name: 'Support'
-                },
-                {
-                    path: '/orders/pending',
-                    icon: 'bi-archive',
+                    path: '/orders/list',
+                    icon: 'bi-journal',
                     name: 'Orders'
                 },
+                {
+                    path: '/myAccount',
+                    icon: 'bi-person',
+                    name: 'Account'
+                },
+                // {
+                //     path: '/aboutUs',
+                //     icon: 'bi-globe',
+                //     name: 'About'
+                // },
             ]
         }
     },

@@ -1,5 +1,5 @@
 <template>
-    <div class="" style="padding-top:60px;padding-bottom:80px">
+    <div class="mt-5 pt-3" style="padding-top:60px;padding-bottom:80px">
         <!-- Mobile version -->
         <div class="d-block d-md-none">
             <div class="d-flex justify-content-center align-items-center">
@@ -21,7 +21,8 @@
                 <div class="row row-cols-2 row-cols-md-3 row-cols-xl-3 g-3">
                     <div class="col " v-for="(wishlist, index) in wishlists" :key="index">
                         <div class="card rounded-0">
-                            <router-link :to="'/product-page/' + wishlist.slug" class="text-decoration-none text-dark">
+                            <router-link :to="'/product-page/' + wishlist.product.slug"
+                                class="text-decoration-none text-dark">
                                 <div :id="'productImages' + index" class="carousel slide">
                                     <div class="carousel-inner">
                                         <div :id="'cardCarousel' + imgIndex" class="carousel-item"
@@ -47,10 +48,9 @@
                                     </div>
                                 </div>
                             </router-link>
-                            <div class=" position-absolute w-100 soh-div">
-                                <div class="d-flex justify-content-end align-items-start p-2">
-                                    <p class="m-0" @click="removeWishlist(wishlist)"><i class="bi bi-x-lg"></i>
-                                    </p>
+                            <div class=" position-absolute w-100 d-flex justify-content-end align-items-start p-2">
+                                <div class="wh-40 bg-light rounded-circle px-1" @click="removeWishlist(wishlist)"><i
+                                        class="bi bi-x-lg"></i>
                                 </div>
                             </div>
                         </div>
@@ -83,23 +83,25 @@
                         <div class="row row-cols-2 row-cols-md-3 row-cols-xl-3 g-3">
                             <div class="col " v-for="(wishlist, index) in wishlists" :key="index">
                                 <div class="card rounded-0">
-                                    <router-link :to="'/product-page/' + wishlist.slug"
+                                    <router-link :to="'/product-page/' + wishlist.product.slug"
                                         class="text-decoration-none text-dark">
                                         <div :id="'productImages' + index" class="carousel slide">
                                             <div class="carousel-inner">
                                                 <div :id="'cardCarousel' + imgIndex" class="carousel-item"
                                                     :class="{ active: imgIndex === 0 }"
-                                                    v-for="(image, imgIndex) in wishlist.product.options" :key="imgIndex">
-                                                    <img :src="image.primary_image" class="card-img-top rounded-0" alt=""
-                                                        style="min-height:100px;">
+                                                    v-for="(image, imgIndex) in wishlist.product.options"
+                                                    :key="imgIndex">
+                                                    <img :src="image.primary_image" class="card-img-top rounded-0"
+                                                        alt="" style="min-height:100px;">
                                                 </div>
                                             </div>
                                             <div class="d-flex mt-2" id="scroll" style="overflow-x: scroll;">
                                                 <button type="button" class="rounded-circle p-0 border me-1"
-                                                    :data-bs-target="'#productImages' + index" :data-bs-slide-to="imgIndex"
-                                                    :class="{ active: imgIndex === 0 }"
+                                                    :data-bs-target="'#productImages' + index"
+                                                    :data-bs-slide-to="imgIndex" :class="{ active: imgIndex === 0 }"
                                                     :aria-current="imgIndex === 0 ? true : false"
-                                                    v-for="(image, imgIndex) in wishlist.product.options" :key="imgIndex">
+                                                    v-for="(image, imgIndex) in wishlist.product.options"
+                                                    :key="imgIndex">
                                                     <img :src="image.primary_image" class="rounded-circle" alt=""
                                                         style="width: 35px; height: 35px; object-fit: fill;">
                                                 </button>
@@ -110,7 +112,7 @@
                                             </div>
                                         </div>
                                     </router-link>
-                                    <div class=" position-absolute w-100 soh-div">
+                                    <div class=" position-absolute w-100">
                                         <div class="d-flex justify-content-end align-items-start p-2">
                                             <p class="m-0" @click="removeWishlist(wishlist)"><i class="bi bi-x-lg"></i>
                                             </p>
@@ -141,37 +143,29 @@
 
             </div>
         </div>
-        <HomePageCard></HomePageCard>
+        <YouMayLike />
 
     </div>
 </template>
 <script>
-import HomePageCard from '@/components/HomePageCard.vue';
-import axiosInstance from '@/modules/macHiddle/axiosInstance';
-import sweetAlert from '@/modules/macHiddle/mixins/sweet-alert';
+import YouMayLike from '@/modules/macHiddle/components/YouMayLike.vue';
 export default {
-    mixins: [sweetAlert],
     name: "SavedProudct",
     components: {
-        HomePageCard
+        YouMayLike
     },
     computed: {
         wishlists() {
-            return this.$store.getters['MacStore/getWishlist']
+            return this.$store.getters['LoggedInUserStore/getWishlist']
         }
     },
     methods: {
         removeWishlist(wishlist) {
-            let token = localStorage.getItem('token')
-            axiosInstance.delete('wishlists/' + wishlist.id, { headers: { "Authorization": `Bearer ${token}` } })
-                .then((response) => {
-                    sweetAlert.showSweetAlert('Done', 'Product Removed from Wishlist')
-                    console.log(response)
-                })
+            this.$store.dispatch('LoggedInUserStore/removeFromWishlist', wishlist.sid)
         }
     },
     mounted() {
-        this.$store.dispatch('MacStore/fetchWishlist')
+        this.$store.dispatch('LoggedInUserStore/fetchWishlist')
     }
 }
 </script>

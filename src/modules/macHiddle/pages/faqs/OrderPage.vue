@@ -17,8 +17,7 @@
 </template>
 
 <script>
-export default {
-    name:'OrderPage',
+export default { 
     data() {
         return {
             orderFaq: [

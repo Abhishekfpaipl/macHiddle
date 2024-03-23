@@ -29,7 +29,7 @@
                     <p class="mb-2">Terms & Condition</p>
                 </router-link>
                 <router-link to="/return-policy" style="text-decoration: none; color: var(--primary-color);">
-                    <p class="mb-2">Return & Refun</p>
+                    <p class="mb-2">Return & Refund</p>
                 </router-link>
             </div>
             <div class="d-block d-lg-flex align-items-center flex-column mb-3">

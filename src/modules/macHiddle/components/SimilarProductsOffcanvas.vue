@@ -13,8 +13,8 @@
                                 <div :id="'similarProduct' + index" class="carousel slide">
                                     <div class="carousel-inner">
                                         <div :id="'cardCarousel' + imgIndex" class="carousel-item"
-                                            :class="{ active: imgIndex === 0 }" v-for="(image, imgIndex) in product.options"
-                                            :key="imgIndex">
+                                            :class="{ active: imgIndex === 0 }"
+                                            v-for="(image, imgIndex) in product.options" :key="imgIndex">
                                             <img :src="image.primary_image" class="card-img-top rounded-0" alt=""
                                                 style="min-height:50px;">
                                         </div>
@@ -32,14 +32,12 @@
                                 </div>
                             </router-link>
 
-                            <div class="" style="padding:3px">
-                                <div class="d-flex justify-content-between mt-1 ms-1 pb-1">
-                                    <p class="m-0 fw-bold" style="font-size:13px;">₹{{
-                                        product.price }}</p>
-                                    <p class="m-0 fw-bold" style="font-size:13px;">{{ product.info
+                            <div class="card-footer">
+                                <p class="m-0 fw-bold" style="font-size:13px;">₹{{
+                        product.price }}</p>
+                                <p class="m-0 fw-bold truncate2" style="font-size:13px;">{{ product.name
                                     }}
-                                    </p>
-                                </div>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -51,9 +49,7 @@
 
 <script>
 export default {
-    name: 'SimiliarProductsOffcanvas',
-    props:['products']
+    name: 'SimilarProductsOffcanvas',
+    props: ['products'],
 }
 </script>
-
-<style lang="scss" scoped></style>

@@ -26,5 +26,15 @@ const sweetAlert = {
             confirmButtonText: 'OK'
         });
     },
+    showEmailError(title = '', text = '') {
+        Swal.fire({
+            icon: "warning",
+            title,
+            text,
+            showConfirmButton: false,
+            footer: "<a href='/email-verification-page'>Go to Email Verification Page</a>"
+        });
+    }
+
 }
 export default sweetAlert

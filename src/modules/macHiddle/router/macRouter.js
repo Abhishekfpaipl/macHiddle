@@ -1,29 +1,41 @@
+
 export default [
-    // {
-    //     path: "/",
-    //     name: "Dashboard",
-    //     component: () => import("@/modules/macHiddle/pages/DashboardPage.vue")
-    // },
     {
-        path: "/dashboard",
+        path: "/",
         name: "Dashboard",
         component: () => import("@/modules/macHiddle/pages/DashboardPage.vue")
     },
     {
         path: "/categories",
-        name: "Category",
-        component: () => import("@/modules/macHiddle/pages/CategoryPage.vue")
+        children: [
+            {
+                path: "",
+                name: "CategoryPage",
+                component: () => import("@/modules/macHiddle/pages/CategoryPage.vue")
+            },
+            {
+                path: ':categoryId',
+                // path: 'sub-category',
+                name: 'SubCategoryPage',
+                component: () => import('@/modules/macHiddle/pages/SubCategoryPage.vue')
+            },
+        ]
+    },
+    {
+        path: '/collection/:collectionId',
+        name: 'ShowCollectionPage',
+        component: () => import('@/modules/macHiddle/pages/ShowCollectionPage.vue')
     },
     {
         path: '/product-page/:productId',
         name: 'ProductPage',
         component: () => import('@/modules/macHiddle/pages/ProductPage.vue')
     },
-    {
-        path: '/allProducts',
-        name: 'AllProducts',
-        component: () => import('@/modules/macHiddle/pages/AllProductPage.vue')
-    },
+    // {
+    //     path: '/allProducts',
+    //     name: 'AllProducts',
+    //     component: () => import('@/modules/macHiddle/pages/AllProductPage.vue')
+    // },
     {
         path: '/support',
         name: 'SupportPage',
@@ -54,63 +66,23 @@ export default [
         name: "WishList",
         component: () => import('@/modules/macHiddle/pages/WishList.vue'),
     },
-    // {
-    //   path: "/otp-page",
-    //   name: "OTPPage",
-    //   component: () => import('@/modules/macHiddle/pages/auths/OtpPage.vue')
-    // },
-    // {
-    //     path: "/email-verification-page",
-    //     name: "EmailVerificationPage",
-    //     component: () => import('@/modules/macHiddle/pages/auths/EmailVerificationPage.vue')
-    // }, 
     {
-        path: "/orders",
-        children: [
-            {
-                path: 'pending',
-                name: 'PendingOrdersPage',
-                component: () => import("@/modules/macHiddle/pages/order/PendingOrdersPage.vue"),
-            },
-            {
-                path: 'completed',
-                name: 'CompletedOrdersPage',
-                component: () => import("@/modules/macHiddle/pages/order/CompletedOrderPage.vue"),
-            },
-            {
-                path: "pending/:orderId",
-                name: "PendingOrderDetailPage",
-                component: () => import('@/modules/macHiddle/pages/order/PendingOrderDetailPage.vue'),
-            },
-            {
-                path: "completed-order/:completeId",
-                name: "CompletedOrderDetailPage",
-                component: () => import('@/modules/macHiddle/pages/order/CompletedOrderDetailPage.vue')
-            },
-        ]
+        path: "/email-verification-page",
+        name: "EmailVerificationPage",
+        component: () => import('@/modules/macHiddle/pages/auths/EmailVerificationPage.vue')
     },
     {
-        path: "/checkout",
+        path: '/orders',
         children: [
             {
-                path: 'cart',
-                name: "CartPage",
-                component: () => import("@/modules/macHiddle/pages/cart/CartPage.vue"),
+                path: 'list',
+                name: 'OrdersListPage',
+                component: () => import("@/modules/macHiddle/pages/order/OrdersListPage.vue"),
             },
             {
-                path: 'billing_address',
-                name: "BillingAddress",
-                component: () => import("@/modules/macHiddle/pages/cart/BillingAddress.vue"),
-            },
-            // {
-            //     path: 'delivery_address',
-            //     name: "DeliveryAddress",
-            //     component: () => import("@/modules/macHiddle/pages/cart/DeliveryAddress.vue"),
-            // },
-            {
-                path: 'confirm',
-                name: "OrderConfirm",
-                component: () => import("@/modules/macHiddle/pages/cart/OrderConfirm.vue"),
+                path: 'detail/:orderId',
+                name: 'OrderDetailPage',
+                component: () => import("@/modules/macHiddle/pages/order/OrderDetailPage.vue"),
             },
         ]
     },
@@ -185,4 +157,54 @@ export default [
 
         ]
     },
+
+
+
+    {
+        path: '/cart-page',
+        name: 'CartPage',
+        component: () => import('@/modules/macHiddle/pages/cart/CartPage.vue')
+    },
+    {
+        path: '/my-address',
+        name: 'AddressPage',
+        component: () => import('@/modules/macHiddle/pages/cart/AddressPage.vue')
+    },
+    {
+        path: '/edit-address/:addressId',
+        name: 'EditAddress',
+        component: () => import('@/modules/macHiddle/pages/cart/EditAddress.vue')
+    },
+    {
+        path: '/new-address',
+        name: 'NewAddressPage',
+        component: () => import('@/modules/macHiddle/pages/cart/NewAddressPage.vue')
+    },
+    {
+        path: '/payment-page',
+        name: 'Checkout',
+        component: () => import('@/modules/macHiddle/pages/cart/PaymentPage.vue')
+    },
+    {
+        path: '/thank-you',
+        name: 'ThankYou',
+        component: () => import('@/modules/macHiddle/pages/cart/ThankYou.vue')
+    },
+    {
+        path: '/sub-category/:categorySlug',
+        name: 'SubCategory',
+        component: () => import('@/modules/macHiddle/pages/SubCategoryPage.vue')
+    },
+    {
+        path: '/search-page',
+        name: 'SearchPage',
+        component: () => import('@/modules/macHiddle/pages/SearchPage.vue')
+    },
+    {
+        path: '/notification-page',
+        name: 'NotificationPage',
+        component: () => import('@/modules/macHiddle/pages/NotificationPage.vue')
+    },
+
 ]
+

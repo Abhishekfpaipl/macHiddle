@@ -2,10 +2,10 @@
     <div class="container-fluid" style="background: var(--secondary-color)">
         <div class="row g-0 pb-2" style="min-height: 100vh;">
             <div class="pt-2 col-md-6 d-flex flex-column justify-content-center align-items-center">
-                <div class=" rounded-circle d-flex justify-content-center"
+                <routerLink to="/" class=" rounded-circle d-flex justify-content-center"
                     style="height: 150px; width: 150px;background: linear-gradient(90deg, rgba(35,31,32,1) 0%, rgba(32,23,25,0.9417016806722689) 100%);">
                     <img :src="`${publicPath}${logo}`" style="width: 100%; object-fit: contain;">
-                </div>
+                </routerLink>
             </div>
             <div class="container d-flex flex-column justify-content-center col-md-6 bg-light pt-2">
                 <p class="text-center fs-5">Login Your Account </p>
@@ -36,7 +36,8 @@
                     </router-link>
                 </form>
                 <div class="text-center container my-3">
-                    <p>By proceeding, you agree to <RouterLink to="/">Terms & Conditions</RouterLink> & <RouterLink to="/">
+                    <p>By proceeding, you agree to <RouterLink to="/">Terms & Conditions</RouterLink> & <RouterLink
+                            to="/">
                             Privacy policy</RouterLink>
                     </p>
                 </div>
@@ -53,9 +54,9 @@ export default {
         return {
             publicPath: process.env.BASE_URL,
             logo: 'img/logo/MacHiddle-nobg.png',
-            email: 'abhi@gmail.com',
-            // mobile: null,
+            email: 'abhishek@gmail.com', 
             password: "123456789",
+            mobile:'',
         };
     },
     methods: {
@@ -64,11 +65,7 @@ export default {
                 email: this.email,
                 password: this.password
             }
-            this.$store.dispatch('MacStore/loginUser', postData)
-                .then(() => {
-                    // If login successful, navigate to dashboard
-                    this.$router.push('/dashboard');
-                })
+            this.$store.dispatch('LoggedInUserStore/loginUser', postData)
         },
 
     },

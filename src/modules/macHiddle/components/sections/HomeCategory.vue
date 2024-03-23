@@ -7,7 +7,7 @@
                     <p class="mb-0 fs-3 text-uppercase">{{ cat.name }}</p>
                     <p class="mb-0 text-uppercase">{{ cat.title }}</p>
                 </div>
-                <div class="w-50">
+                <div class="w-50 img">
                     <img :src="`${publicPath}${cat.img}`" style="width: 100%;">
                 </div>
             </router-link>
@@ -18,8 +18,8 @@
             <div class="d-none d-md-flex px-2 gap-2 overflow-scroll" id="scroll" ref="gallery">
                 <div v-for="(cat, index) in categories" :key="index">
                     <router-link :to="'/catalogs/' + cat.name" class="text-decoration-none text-dark">
-                        <div style="width: 400px;">
-                            <img :src="`${publicPath}${cat.img}`" style="width: 100%; object-fit: cover;">
+                        <div class="img" style="width: 400px;">
+                            <img :src="`${publicPath}${cat.img}`"  style="width: 100%; object-fit: cover;">
                             <p class="text-center fs-2" :style="'background-color:' + cat.bgColor">{{ cat.name }}</p>
                         </div>
                     </router-link>
@@ -45,7 +45,7 @@ export default {
     },
     computed: {
         categories() {
-            return this.$store.getters['MacStore/getCategories']
+            return this.$store.getters['MacStore/getCategory']
         },
         showPrevious() {
             const gallery = this.$refs.gallery;
@@ -92,4 +92,10 @@ export default {
 .position-relative:hover .next-icon {
     display: flex;
 }
+/* .img img{
+    transition: transform .5s ease-in-out;
+}
+.img:hover img{
+    transform: scale(.5);
+} */
 </style>

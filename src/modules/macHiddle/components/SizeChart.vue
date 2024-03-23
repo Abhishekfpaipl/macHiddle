@@ -119,7 +119,7 @@
 </template>
 <script>
 export default {
-    name: 'ProductDetails',
+    name: 'SizeChart',
 }
 </script>
 <style scoped>

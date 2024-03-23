@@ -62,10 +62,10 @@ export default {
             return this.$store.getters['MacStore/getCartProduct'];
         },
     },
-    // components: {
-    //     CartBottomNav,
+    components: {
+        // CartBottomNav,
     //     PriceDetails,
-    // }
+    }
 }
 </script>
 

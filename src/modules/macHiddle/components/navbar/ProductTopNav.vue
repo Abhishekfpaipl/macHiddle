@@ -7,7 +7,7 @@
                 <i class="bi bi-search fs-2 brand-text"></i>
             </router-link>
         </div>
-        <router-link to="/dashboard" :class="{ 'hide-on-scroll': hideOnScroll }"
+        <router-link to="/" :class="{ 'hide-on-scroll': hideOnScroll }"
             class="text-decoration-none d-flex align-items-center">
             <img :src="`${publicPath}${logo}`" style="height: 50px;">
 
@@ -16,12 +16,12 @@
 
             <router-link to="/wishlist" :class="{ 'text-danger': currentRoute === 'SavedProduct' }"
                 class="text-decoration-none" style="color: var(--primary-color);">
-                <i class="bi bi-hearts mt-1 fs-1 brand-text"></i>
+                <i class="bi bi-heart mt-1 fs-2 brand-text"></i>
             </router-link>
 
-            <router-link to="/checkout/cart" :class="{ 'text-danger': currentRoute === 'simplestepper' }"
+            <router-link to="/cart-page" :class="{ 'text-danger': currentRoute === 'simplestepper' }"
                 class="text-decoration-none" style="color: var(--primary-color);">
-                <i class="bi bi-cart3 fs-1 pe-1 brand-text"></i>
+                <i class="bi bi-cart3 fs-2 pe-1 brand-text"></i>
             </router-link>
 
         </div>

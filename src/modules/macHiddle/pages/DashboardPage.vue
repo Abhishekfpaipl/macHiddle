@@ -1,76 +1,74 @@
 <template>
-    <div>
+    <div class="mt-5 pt-3">
         <div id="mobileCarousel" class="carousel slide row-cols-xl" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <div class="carousel-item" v-for="(banner, index) in banners" :key="index" :class="{ active: index === 0 }"
-                    data-bs-interval="2000">
-                    <img :src="banner.primary_image" class="" style="height: 80vh;" :alt="banner.alt">
+                <div class="carousel-item" v-for="(banner, index) in banners" :key="index"
+                    :class="{ active: index === 0 }" data-bs-interval="2000">
+                    <img :src="banner.primary_image" class="" style="height: 400px; width: 100%; object-fit: cover;"
+                        :alt="banner.alt">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#mobileCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next d-md-none" type="button" data-bs-target="#mobileCarousel"
+            <button class="carousel-control-next" type="button" data-bs-target="#mobileCarousel"
                 data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <HomeCategory />
+
+        <div class="d-flex overflow-x-scroll my-4" id="scroll">
+            <div class="d-flex flex-column align-items-center px-2" v-for="(category, index) in categories"
+                :key="index">
+                <img :src="category.primary_image" class="rounded-circle"
+                    style="width:80px; height: 80px; object-fit: cover;">
+                <strong>{{ category.name }}</strong>
+            </div>
+        </div>
+        <!-- <HomeCategory /> -->
         <!-- <SectionCard /> -->
-        <CollectionPage />
-        <HomePageCard />
+        <Collection />
+        <YouMayLike />
+        <FooterBar />
     </div>
 </template>
 
 <script>
 
-import CollectionPage from '@/components/CollectionPage.vue';
-import HomePageCard from '@/components/HomePageCard.vue';
-import axiosInstance from '@/modules/macHiddle/axiosInstance';
+import Collection from '@/components/CollectionPage.vue';
+import YouMayLike from '@/modules/macHiddle/components/YouMayLike.vue';
 // import SectionCard from '@/modules/macHiddle/components/sections/SectionCard.vue';
-import HomeCategory from '@/modules/macHiddle/components/sections/HomeCategory.vue';
+// import HomeCategory from '@/modules/macHiddle/components/sections/HomeCategory.vue';
+import FooterBar from '@/modules/macHiddle/components/navbar/FooterBar.vue';
 
 export default {
     name: "DashboardPage",
     components: {
-        CollectionPage,
-        HomePageCard,
+        Collection,
+        YouMayLike,
         // SectionCard,
-        HomeCategory
+        // HomeCategory,
+        FooterBar
     },
     data() {
         return {
-            carouselItems: [
-                {
-                    id: 1,
-                    src: 'https://media.boohoo.com/i/boohooamplience/240219_Mobile_40NewSeason_UK',
-                    alt: 'First slide',
-                    interval: 2000,
-                    isActive: true // This item will be active initially
-                },
-                {
-                    id: 2,
-                    src: 'https://media.boohoo.com/i/boohooamplience/MOB_6',
-                    alt: 'Second slide',
-                    interval: 2000,
-                    isActive: false
-                }
-            ],
-            banners: [],
+            publichPath: process.env.BASE_URL,
+            banner: 'img/banner.png'
         }
     },
     mounted() {
-        // this.$store.dispatch('MacStore/fetchBanners')
-        axiosInstance.get('banners').then(response => {
-            this.banners = response.data.data
-        })
+        this.$store.dispatch('MacStore/fetchBanners')
+        this.$store.dispatch('MacStore/fetchCategories')
     },
     computed: {
-        // banners() {
-        //     return this.$store.getters['MacStore/getBanners']
-        // }
+        banners() {
+            return this.$store.getters['MacStore/getBanners']
+        },
+        categories() {
+            return this.$store.getters['MacStore/getCategories'];
+        }
     }
 }
 </script>

@@ -2,20 +2,22 @@
     <div class="overflow-x-hidden">
         <div class="py-3 d-flex align-items-center justify-content-center bg-light">
             <transition name="slide-fade" mode="out-in">
-                <p class="mb-0 fs-5 bg-dark text-white text-center p-2" style=" box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1)"
-                    :key="activeMessageIndex">{{ promotionMessages[activeMessageIndex] }}</p>
+                <p class="mb-0 fs-5 bg-dark text-white text-center p-2"
+                    style=" box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1)" :key="activeMessageIndex">{{
+                        promotionMessages[activeMessageIndex] }}</p>
             </transition>
         </div>
         <div class="d-lg-none d-block">
             <!-- <CatelogFilter/> -->
             <div class="d-flex gap-4 overflow-x-scroll px-3 py-2 border-bottom" id="scroll">
-                <div class="text-capitalize fw-bold" v-for="(category, categoryIndex) in categories" :key="categoryIndex">
+                <div class="text-capitalize fw-bold" v-for="(category, categoryIndex) in categories"
+                    :key="categoryIndex">
                     {{ category.name }}
                 </div>
             </div>
             <div class="d-flex justify-content-between align-items-center px-3 mt-2">
                 <span>
-                    {{ categories.length }} Results
+                    {{ allProducts.length }} Results
                 </span>
                 <span class="rounded-pill border p-2" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas"
                     role="button" aria-expanded="false"> Filter
@@ -23,7 +25,6 @@
             </div>
         </div>
         <div class="px-2  mt-2">
-            <p class="d-md-block d-none mb-0 fs-2 text-center">{{ decodedPath }}</p>
             <div class="justify-content-between mb-2 d-none d-md-flex">
                 <button class="btn btn-dark rounded-0 d-flex gap-2" @click="showFilterPanel = !showFilterPanel">
                     <i class="bi bi-sliders"></i>
@@ -56,8 +57,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-3 border border-1" v-show="showFilterPanel">
-
+                <div class="col-3 border border-1" v-show="showFilterPanel"> 
                     <CategoryFilter :categories="categories" />
                     <PriceFilter></PriceFilter>
                     <ColorFilter></ColorFilter>
@@ -68,9 +68,10 @@
                 </div>
                 <div :class="toggleCol">
                     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-                        <div class="col " v-for="(product, index) in allProducts" :key="index">
+                        <div class="col " v-for="(product, index) in getAllProducts" :key="index">
                             <div class="card rounded-0 show-on-hover">
-                                <router-link :to="'/product-page/' + product.slug" class="text-decoration-none text-dark">
+                                <router-link :to="'/product-page/' + product.slug"
+                                    class="text-decoration-none text-dark">
                                     <div :id="'productImages' + index" class="carousel slide">
                                         <div class="carousel-inner">
                                             <div :id="'cardCarousel' + imgIndex" class="carousel-item"
@@ -115,7 +116,7 @@
                                     </button>
                                 </div>
 
-                                <SimiliarProductsOffcanvas :products="allProducts" />
+                                <SimilarProductsOffcanvas :products="getAllProducts" />
                             </div>
                         </div>
                     </div>
@@ -123,10 +124,10 @@
             </div>
 
         </div>
-        <QuickAdd :product="products" />
+        <QuickAdd :product="getAllProducts" />
 
-        <div class="offcanvas offcanvas-bottom" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel"
-            style="height:80vh">
+        <div class="offcanvas offcanvas-bottom" tabindex="-1" id="filterOffcanvas"
+            aria-labelledby="filterOffcanvasLabel" style="height:80vh">
             <div class="offcanvas-header border-bottom">
                 <h5 class="offcanvas-title fw-bold" id="filterOffcanvasLabel">Filters </h5>
                 <div class=" bg-white w-100" style="bottom:0px;">
@@ -151,8 +152,8 @@
         </div>
     </div>
 </template>
+
 <script>
-// import CatelogFilter from '@/modules/macHiddle/components/filters/CatelogFilter.vue';
 import CategoryFilter from '@/modules/macHiddle/components/filters/CategoryFilter.vue';
 import PriceFilter from '@/modules/macHiddle/components/filters/PriceFilter.vue';
 import ColorFilter from '@/modules/macHiddle/components/filters/ColorFilter.vue';
@@ -161,8 +162,11 @@ import PatternFilter from '@/modules/macHiddle/components/filters/PatternFilter.
 import LengthFilter from '@/modules/macHiddle/components/filters/LengthFilter.vue';
 import StyleFilter from '@/modules/macHiddle/components/filters/StyleFilter.vue';
 import QuickAdd from '@/modules/macHiddle/components/QuickAdd.vue';
-import SimiliarProductsOffcanvas from '@/modules/macHiddle/components/SimiliarProductsOffcanvas.vue';
-import axiosInstance from '../axiosInstance';
+import SimilarProductsOffcanvas from '@/modules/macHiddle/components/SimilarProductsOffcanvas.vue';
+// import axiosInstance from '../axiosInstance';
+
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
     name: "AllProductPage",
     components: {
@@ -175,15 +179,11 @@ export default {
         LengthFilter,
         StyleFilter,
         QuickAdd,
-        SimiliarProductsOffcanvas,
+        SimilarProductsOffcanvas,
     },
     data() {
         return {
             publicPath: process.env.BASE_URL,
-            selectedColor: null,
-            selectedSize: null,
-            showPopup: false,
-            showPopupCart: false,
             showFilterPanel: false,
             promotionMessages: [
                 "Sale:Up to 50% off on selected items!",
@@ -191,35 +191,51 @@ export default {
                 "Flash Sale: 24 hours of unbeatable deals!",
             ],
             activeMessageIndex: 0,
-            currentPath: '',
-            cleanedPath: '',
-            decodedPath: '',
             categories: [],
+            page: 1,
+            isFetching: false,
+            allProducts: [],
+            previousScrollTop: 0,
         }
     },
     computed: {
-        products() {
-            return this.$store.getters['MacStore/getProducts']
-        },
-        // activeProduct() {
-        //     return this.$store.getters['catalog/getActiveProduct']
-        // },
         toggleCol() {
             return this.showFilterPanel ? 'col-9' : 'col-12';
         },
-        allProducts() {
-            return this.$store.getters['MacStore/getAllProducts']
-        }
+        ...mapGetters('MacStore', ['getAllProducts']),
+        // allProducts() {
+        //     return this.$store.getters['MacStore/getAllProducts']
+        // }
     },
     mounted() {
         this.startSlideshow();
-        this.$store.dispatch('closeMainMenu')
-        axiosInstance.get('categories').then(response => {
-            this.categories = response.data.data
-        })
-        this.$store.dispatch('MacStore/fetchAllProducts')
+        this.fetchProducts(this.page); // Initial fetch
+        window.addEventListener('scroll', this.handleScroll);
     },
-    methods: {
+    unmounted() {
+        window.removeEventListener('scroll', this.handleScroll); // Clean up the event listener
+    },
+    methods: { 
+        ...mapActions('MacStore', ['fetchProducts']),
+        handleScroll() {
+            const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+            // Check if scrolling down
+            if (scrollTop > this.previousScrollTop && clientHeight + scrollTop >= scrollHeight - 5 && !this.isFetching) {
+                this.isFetching = true;
+                if (this.page === 1) {
+                    this.page++; // Increment page only for the first scroll
+                }
+                this.fetchProducts(this.page); // Dispatch action to fetch products
+                this.page++; // Increment page for the next fetch
+                this.isFetching = false;
+            }
+
+            // Update previous scroll position
+            this.previousScrollTop = scrollTop;
+        },
+
+
         sortByPrice(order) {
             this.products.sort((a, b) => {
                 if (order === 'high') {
@@ -229,75 +245,18 @@ export default {
                 }
             });
         },
-        cleanPath(path) {
-            // Remove '/catalogs/' using splice
-            const parts = path.split('/');
-            parts.splice(1, 1); // Remove the second part (index 1)
-            return parts.join('');
-        },
-        decodePath(encodedPath) {
-            return decodeURIComponent(encodedPath);
-        },
         startSlideshow() {
             setInterval(() => {
                 this.activeMessageIndex = (this.activeMessageIndex + 1) % this.promotionMessages.length;
             }, 5000); // Change message every 5 seconds
         },
-        saveProduct(productId) {
-            this.$store.dispatch('catalog/saveProduct', productId);
-            this.showPopup = true;
-            setTimeout(() => {
-                this.showPopup = false;
-            }, 2000);
-        },
-        addToCart() {
-            const test = {
-                productId: this.activeProduct.id,
-                color: this.selectedColor,
-                size: this.selectedSize,
-            }
-            this.$store.dispatch('catalog/AddToCart', test);
-            this.showPopupCart = true;
-            setTimeout(() => {
-                this.showPopupCart = false
-            }, 2000);
-            this.selectedColor = null;
-            this.selectedSize = null;
-        },
-        // showActive(product) {
-        //     this.$store.dispatch('catalog/selectActiveProduct', product)
-        // },
-        // hideActive() {
-        //     this.$store.dispatch('catalog/hideActiveProduct')
-        //     this.selectedColor = null
-        //     this.selectedSize = null
-        // },
-        showmore() {
-            this.count = Object.keys(this.categoriesD).length
-        },
-        showless() {
-            this.count = 5
-        },
         toggleFilterPanel() {
             this.showFilterPanel = !this.showFilterPanel;
         },
     },
-    created() {
-        // Initialize the currentPath with the initial route path
-        this.currentPath = this.$route.path;
-        this.cleanedPath = this.cleanPath(this.currentPath);
-        this.decodedPath = this.decodePath(this.cleanedPath);
-    },
-    watch: {
-        '$route'(to) {
-            // Update the currentPath and cleanedPath whenever the route changes
-            this.currentPath = to.path;
-            this.cleanedPath = this.cleanPath(this.currentPath);
-            this.decodedPath = this.decodePath(this.cleanedPath);
-        }
-    },
 }
 </script>
+
 <style scoped>
 .slide-fade-enter-active,
 .slide-fade-leave-active {

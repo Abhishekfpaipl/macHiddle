@@ -1,59 +1,55 @@
 <template>
   <div>
-    <div v-for="(collection, index) in collections" :key="index" class="my-3">
-      <div class="banner" style="background-color: #EFEFED;">
+    <div v-for="(collection, index) in  collections " :key="index" class="my-3">
+      <div class="banner"
+        style="background: linear-gradient(90deg, rgba(149,143,145,1) 0%, rgba(254,254,254,0.9753151260504201) 100%);">
         <div class="container">
           <div class="row">
-            <div class="col-md-8" :class="'order-' + collection.order">
-              <h1 class="mt-4">{{ collection.name }}</h1>
+            <div class="col-md-8 col-6 " :class="'order-' + collection.order">
+              <h4 class="mt-4" :class="{ 'text-start': collection.order === 0, 'text-end': collection.order === 1 }">
+                {{ collection.name }}
+              </h4>
               <p>{{ collection.info }}</p>
-              <router-link :to="'/catalogs/collection' + collection.id">
-                <button class="btn top-brand rounded mb-4">{{ collection.button }}</button>
+              <router-link :to="'/collection/' + collection.sid"
+                :class="{ 'float-start': collection.order === 0, 'float-end': collection.order === 1 }">
+                <button class="btn btn-dark rounded-pill mb-4">Shop Now</button>
               </router-link>
             </div>
 
-            <div class="col-md-4">
-              <img :src="collection.products[0].option.primary_image" class="img-fluid" alt="">
+            <div class="col-md-4 col-6 d-flex align-items-center justify-content-center">
+              <img :src="collection.primary_image" class="img-fluid float-end" style="height: 150px;">
             </div>
           </div>
         </div>
       </div>
-
-      <div class="container px-4 mt-3">
-        <div class="row row-cols-2 row-cols-md-4 g-2">
-          <div class="col" v-for="(product, productIndex) in collection.products" :key="productIndex">
-            <router-link :to="'/product-page/' + product.slug" class="text-decoration-none text-dark">
-              <div class="card rounded-0">
-                <img :src="product.option.primary_image" class="card-img-top" alt="">
-                <div class="card-body d-flex justify-content-between" style="font-size: 10px;">
-                  <p class="card-text">₹{{ product.price }}</p>
-                  <p class="card-text">{{ product.moq }} MOQ</p>
-                </div>
-              </div>
-            </router-link>
-          </div>
-        </div>
+      <div class="container my-2">
+        <ProductCard :products="collection.products" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axiosInstance from '@/modules/macHiddle/axiosInstance';
-
+import ProductCard from '@/modules/macHiddle/components/ProductCard.vue';
+import sweetAlert from '@/modules/macHiddle/mixins/sweet-alert';
 export default {
   name: "CollectionPage",
-  data() {
-    return {
-      collections: []
-    };
+  mixins: [sweetAlert],
+  components: {
+    ProductCard
   },
   mounted() {
-    axiosInstance.get('collections').then(response => {
-      this.collections = response.data.data;
-    });
-  }
+    this.$store.dispatch('MacStore/fetchCollections')
+  },
+  computed: {
+    collections() {
+      return this.$store.getters['MacStore/getCollections']
+    }
+  },
+
 };
 </script>
 
-<style></style>
+<style>
+/* background: linear-gradient(90deg, rgba(35,31,32,1) 0%, rgba(236,195,171,1) 96%); */
+</style>
