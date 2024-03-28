@@ -987,7 +987,7 @@ export default {
         },
         fetchShowCollectionFilter({ commit }, { collectionId, page }) {
             console.log('showcatFilter', collectionId, page)
-            axiosInstance.get('collections/' + collectionId + '/?page=' + page)
+            axiosInstance.get('collections/' + collectionId + '?page=' + page)
                 .then((response) => {
                     if (response.data.status === 'ok') {
                         commit('setShowCollectionFilter', response.data.data.extraData)
@@ -1066,7 +1066,8 @@ export default {
                 })
         },
         fetchShowCategory({ commit, dispatch }, { categoryId, page }) {
-            axiosInstance.get('categories/' + categoryId + '/?page=' + page)
+            axiosInstance.get('categories/' + categoryId + '?page=' + page)
+            axiosInstance.get('categories/' + categoryId)
                 .then((response) => {
                     if (response.data.status === 'ok') {
                         commit('setShowCategory', response.data.data.data)
@@ -1084,8 +1085,8 @@ export default {
                 });
         },
         fetchShowCategoryFilter({ commit }, { categoryId, page }) {
-            console.log('showcatFilter', categoryId, page)
-            axiosInstance.get('categories/' + categoryId + '/?page=' + page)
+            axiosInstance.get('categories/' + categoryId + '?page=' + page)
+            axiosInstance.get('categories/' + categoryId )
                 .then((response) => {
                     if (response.data.status === 'ok') {
                         commit('setShowCategoryFilter', response.data.data.extraData)
@@ -1102,7 +1103,7 @@ export default {
                 });
         },
         applyFilters({ commit }, data) {
-            axiosInstance.get('categories/' + data.categoryId + '/?page=' + data.page + '&options=' + data.colors + '&ranges=' + data.sizes + '&attributes=' + data.attributes)
+            axiosInstance.get('categories/' + data.categoryId + '?page=' + data.page + '&options=' + data.colors + '&ranges=' + data.sizes + '&attributes=' + data.attributes)
                 .then((response) => {
                     if (response.data.status === 'ok') {
                         commit('setFilteredCategory', response.data.data.data)
@@ -1119,7 +1120,7 @@ export default {
                 });
         },
         applyCollectionFilters({ commit }, data) {
-            axiosInstance.get('collections/' + data.collectionId + '/?page=' + data.page + '&options=' + data.colors + '&ranges=' + data.sizes + '&attributes=' + data.attributes)
+            axiosInstance.get('collections/' + data.collectionId + '?page=' + data.page + '&options=' + data.colors + '&ranges=' + data.sizes + '&attributes=' + data.attributes)
                 .then((response) => {
                     if (response.data.status === 'ok') {
                         commit('setFilteredCollection', response.data.data.data)
@@ -1142,7 +1143,7 @@ export default {
                 direction: direction
             });
 
-            axiosInstance.get(`collections/${data.collectionId}/?${queryParams}`)
+            axiosInstance.get(`collections/${data.collectionId}?${queryParams}`)
                 .then((response) => {
                     const responseData = response.data;
                     if (responseData.status === 'ok') {

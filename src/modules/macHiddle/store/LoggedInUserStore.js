@@ -288,10 +288,11 @@ export default {
                     commit('actionDone', response)
                 })
         },
-        deleteAddress({ commit }, data) {
+        deleteAddress({ commit, dispatch }, data) {
             axiosInstance.delete(`addresses/${data}`, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     commit('actionDone', response)
+                    dispatch('fetchAddresses')
                 })
         },
         setDefaultAddress({ commit }, data) {

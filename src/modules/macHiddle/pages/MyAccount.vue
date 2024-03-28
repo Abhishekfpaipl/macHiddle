@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container mt-5 pt-3">
         <div class="container my-2">
             <div class="d-flex flex-column justify-content-center align-items-center mb-4 border-bottom">
                 <img :src="profile" class="rounded-circle border" style="width:80px ; height: 80px;" alt="">

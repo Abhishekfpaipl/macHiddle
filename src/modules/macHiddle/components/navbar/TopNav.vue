@@ -51,14 +51,18 @@
             </div>
             <div style="background-color: var(--secondary-color); color: var(--primary-color);"
                 class="offcanvas-body position-relative w-100">
-                <div v-for="(category, index) in categories" :key="index" class=" border-bottom py-3"
+                <div v-for="(page, index) in pages" :key="index" class=" border-bottom py-3"
                     data-bs-dismiss="offcanvas">
-                    <router-link :to="category.router" class=" d-flex text-start text-decoration-none"
+                    <router-link :to="page.router" class=" d-flex text-start text-decoration-none"
                         style="color: var(--primary-color);">
-                        <i :class="category.icon"></i>
-                        <p class="m-0 ms-2">{{ category.name }}</p>
+                        <i :class="page.icon"></i>
+                        <p class="m-0 ms-2">{{ page.name }}</p>
                     </router-link>
                 </div>
+                <router-link v-if="user" to="/login-page" class="border-bottom py-3 d-flex text-start text-decoration-none">
+                    <i class="bi bi-arrow-right"></i>
+                    <p class="m-0 ms-2">Login</p>
+                </router-link>
             </div>
             <div class="position-absolute bottom-0 w-100 py-3" style="color: var(--primary-color);">
                 <p class="text-center my-3 fs-4 ">Reach Us</p>
@@ -93,7 +97,7 @@ export default {
         return {
             publicPath: process.env.BASE_URL,
             img: "img/logo/mac2.png",
-            categories: [
+            pages: [
                 {
                     name: 'About Us',
                     icon: 'bi bi-arrow-right ',
@@ -114,28 +118,28 @@ export default {
                     icon: 'bi bi-arrow-right ',
                     router: '/career'
                 },
-                {
-                    name: 'Login',
-                    icon: 'bi bi-arrow-right ',
-                    router: '/login-page'
-                },
+                // {
+                //     name: 'Login',
+                //     icon: 'bi bi-arrow-right ',
+                //     router: '/login-page'
+                // },
             ],
 
         }
     },
     mounted() {
         this.$store.dispatch('LoggedInUserStore/fetchCart')
+        this.$store.dispatch('LoggedInUserStore/fetchUserDetail')
     },
     computed: {
         cart() {
             return this.$store.getters['LoggedInUserStore/getCart']
+        },
+        user() {
+            return this.$store.getters['LoggedInUserStore/getUserDetail']
         }
     },
-    methods: {
-        // checkCart() {
-
-        // }
-    }
+    methods: {}
 }
 </script>
 

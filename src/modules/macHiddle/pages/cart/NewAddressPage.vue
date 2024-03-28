@@ -17,7 +17,7 @@
                     <label for="nameInput">Last Name</label>
                 </div>
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="phoneInput" v-model="formData.contact_no" required
+                    <input type="number" class="form-control" id="phoneInput" v-model="formData.contact_no" required
                         style="border: none;border-bottom: 1px solid;border-radius: 0px;box-shadow: none;" />
                     <label for="phoneInput">Phone Number</label>
                 </div>

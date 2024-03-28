@@ -1,6 +1,6 @@
 <template>
     <CartTopNav />
-    <div class="container pb-5">
+    <div class="container pb-5 mt-5">
         <CartStepper />
         <div v-if="cartProducts && cartProducts.products && cartProducts.products.length === 0"
             class="bg-light w-100 d-flex flex-column justify-content-center align-items-center my-1"
