@@ -3,7 +3,7 @@
 import axios from 'axios';
 // const token = localStorage.getItem('token');
 const axiosInstance = axios.create({
-    baseURL: 'https://server.machiddle.com/', // Your base URL
+    baseURL: 'https://server.machiddle.com/api/', // Your base URL
     // headers: {
     //     "Authorization": `Bearer ${token}`
     // }
