@@ -1067,7 +1067,6 @@ export default {
         },
         fetchShowCategory({ commit, dispatch }, { categoryId, page }) {
             axiosInstance.get('categories/' + categoryId + '?page=' + page)
-            axiosInstance.get('categories/' + categoryId)
                 .then((response) => {
                     if (response.data.status === 'ok') {
                         commit('setShowCategory', response.data.data.data)
@@ -1086,7 +1085,6 @@ export default {
         },
         fetchShowCategoryFilter({ commit }, { categoryId, page }) {
             axiosInstance.get('categories/' + categoryId + '?page=' + page)
-            axiosInstance.get('categories/' + categoryId )
                 .then((response) => {
                     if (response.data.status === 'ok') {
                         commit('setShowCategoryFilter', response.data.data.extraData)
