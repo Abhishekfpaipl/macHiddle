@@ -1,5 +1,6 @@
 <template>
     <div class="mt-5 pt-3">
+        <WebPushNotification />
         <div id="mobileCarousel" class="carousel slide row-cols-xl" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item" v-for="(banner, index) in banners" :key="index"
@@ -12,8 +13,7 @@
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#mobileCarousel"
-                data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#mobileCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
@@ -39,6 +39,7 @@
 
 import Collection from '@/components/CollectionPage.vue';
 import YouMayLike from '@/modules/macHiddle/components/YouMayLike.vue';
+import WebPushNotification from '@/modules/macHiddle/components/WebPushNotification.vue';
 // import SectionCard from '@/modules/macHiddle/components/sections/SectionCard.vue';
 // import HomeCategory from '@/modules/macHiddle/components/sections/HomeCategory.vue';
 import FooterBar from '@/modules/macHiddle/components/navbar/FooterBar.vue';
@@ -50,7 +51,8 @@ export default {
         YouMayLike,
         // SectionCard,
         // HomeCategory,
-        FooterBar
+        FooterBar,
+        WebPushNotification
     },
     data() {
         return {

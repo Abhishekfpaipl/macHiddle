@@ -59,7 +59,7 @@
                         <p class="m-0 ms-2">{{ page.name }}</p>
                     </router-link>
                 </div>
-                <router-link v-if="user" to="/login-page" class="border-bottom py-3 d-flex text-start text-decoration-none">
+                <router-link v-if="!user.name" to="/login-page" class="border-bottom py-3 d-flex text-start text-decoration-none">
                     <i class="bi bi-arrow-right"></i>
                     <p class="m-0 ms-2">Login</p>
                 </router-link>
