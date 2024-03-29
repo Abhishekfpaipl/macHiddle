@@ -1,5 +1,5 @@
 <template>
-    <div class=" w-100">
+    <div class="mt-5 w-100">
         <div class="" style="background-color: var(--primary-color); color: var(--secondary-color);">
             <p sty class="fs-1 text-center fw-bold py-5">Privacy Policies</p>
         </div>

@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <select class="form-select" id="sortSelect" v-model="selectedSort">
+                    <select class="form-select" id="sortSelect" v-model="selectedSort" @change="applySort()">
                         <option value="priceHighToLow" selected>Select sorting options</option>
                         <option value="priceHighToLow">Price High to Low</option>
                         <option value="priceLowToHigh">Price Low to High</option>
@@ -158,7 +158,28 @@ export default {
             //     console.error('Error applying filters:', error);
             // });
         },
+        applySort() {
+            let orderBy, direction;
+            if (this.selectedSort === 'priceHighToLow') {
+                orderBy = 'price';
+                direction = 'desc';
+            } else if (this.selectedSort === 'priceLowToHigh') {
+                orderBy = 'price';
+                direction = 'asc';
+            }
+            const data = {
+                categoryId: this.categoryId,
+                page: this.page
+            }
+            console.log('Sort by:', orderBy, direction);
+            this.$store.dispatch('MacStore/applyCategorySort', { orderBy, direction, data })
+        }
 
+    },
+    watch: {
+        selectedSort() {
+            this.applySort();
+        }
     }
 }
 </script>

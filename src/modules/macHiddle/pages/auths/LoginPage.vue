@@ -19,10 +19,13 @@
                         <input type="email" class="form-control" placeholder="Email" v-model="email">
                         <label for="floatingInput" class="text-muted">Email Id.</label>
                     </div>
-                    <div class="w-100 p-2 form-floating">
-                        <input type="password" class="form-control" id="floatingInput2" placeholder="Password"
+                    <div class="w-100 p-2 form-floating btn-group">
+                        <input type="password" class="form-control" id="password" placeholder="Password"
                             v-model="password" required>
-                        <label for="floatingInput2" class="text-muted">Password</label>
+                        <label for="password" class="text-muted">Password</label>
+                        <i class="bi btn btn-outline-dark  py-3"
+                            :class="{ 'bi-eye': !showPassword, 'bi-eye-slash': showPassword }"
+                            @click="togglePasswordVisibility('password')"></i>
                     </div>
                     <router-link to="/forgot-password-page" class="float-end">
                         <p class="text-center">Forgot Password?</p>
@@ -36,8 +39,8 @@
                     </router-link>
                 </form>
                 <div class="text-center container my-3">
-                    <p>By proceeding, you agree to <RouterLink to="/">Terms & Conditions</RouterLink> & <RouterLink
-                            to="/">
+                    <p>By proceeding, you agree to <RouterLink to="/terms">Terms & Conditions</RouterLink> & <RouterLink
+                            to="/privacy-policy">
                             Privacy policy</RouterLink>
                     </p>
                 </div>
@@ -54,9 +57,10 @@ export default {
         return {
             publicPath: process.env.BASE_URL,
             logo: 'img/logo/MacHiddle-nobg.png',
-            email: 'abhishek@gmail.com', 
+            email: 'abhishek@gmail.com',
             password: "123456789",
-            mobile:'',
+            mobile: '',
+            showPassword: false,
         };
     },
     methods: {
@@ -67,7 +71,11 @@ export default {
             }
             this.$store.dispatch('LoggedInUserStore/loginUser', postData)
         },
-
+        togglePasswordVisibility(fieldId) {
+            this.showPassword = !this.showPassword;
+            const inputField = document.getElementById(fieldId);
+            inputField.type = this.showPassword ? 'text' : 'password';
+        }
     },
 }
 </script>

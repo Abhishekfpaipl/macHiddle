@@ -11,7 +11,7 @@
                 <p class="text-center fs-5">Forgot Password</p>
                 <form @submit.prevent="forgotPassword()">
                     <div class="w-100 p-2 form-floating">
-                        <input type="email" class="form-control" placeholder="Email" v-model="email">
+                        <input type="email" class="form-control" placeholder="Email" v-model="email" required>
                         <label for="floatingInput" class="text-muted">Email Id.</label>
                     </div>
                     <div class="d-flex justify-content-center align-items-center w-100 px-2 mt-2">

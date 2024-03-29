@@ -1,29 +1,29 @@
 <template>
   <TopNav v-if="!hide" />
   <!-- <div style="margin-top: 60px;"> -->
-    <router-view />
-  <!-- </div> --> 
+  <router-view />
+  <!-- </div> -->
   <bottom-nav v-if="!hidden" />
 </template>
 
 <script>
 import BottomNav from '@/modules/macHiddle/components/navbar/BottomNav.vue';
-import TopNav from '@/modules/macHiddle/components/navbar/TopNav.vue' 
+import TopNav from '@/modules/macHiddle/components/navbar/TopNav.vue'
 export default {
   name: 'E-comApp',
   components: {
     BottomNav,
-    TopNav, 
+    TopNav,
   },
   computed: {
     hide() {
-      const hiddenPages = ['LoginPage', 'RegistrationPage', 'ForgotPasswordPage','CartPage','NotificationPage','OrdersListPage','EmailVerificationPage']
+      const hiddenPages = ['LoginPage', 'RegistrationPage', 'ForgotPasswordPage', 'CartPage', 'NotificationPage', 'OrdersListPage', 'EmailVerificationPage', 'ResetPasswordPage']
       return hiddenPages.includes(this.$route.name)
     },
     hidden() {
-      const hiddenPages = ['LoginPage', 'RegistrationPage', 'ForgotPasswordPage', 'ProductPage','NotificationPage','EmailVerificationPage',]
+      const hiddenPages = ['LoginPage', 'RegistrationPage', 'ForgotPasswordPage', 'ProductPage', 'NotificationPage', 'EmailVerificationPage', 'ResetPasswordPage']
       return hiddenPages.includes(this.$route.name)
-    }, 
+    },
   }
 }
 </script>
@@ -45,6 +45,7 @@ export default {
   max-height: 3em;
   overflow: hidden;
 }
+
 .truncate2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;

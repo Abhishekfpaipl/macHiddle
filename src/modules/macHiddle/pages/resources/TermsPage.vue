@@ -1,10 +1,10 @@
 <template>
-    <div class="w-100">
+    <div class="w-100 mt-5">
         <div class="" style="background-color: var(--primary-color); color: var(--secondary-color);">
             <p sty class="fs-1 text-center fw-bold py-5">Terms & Conditions</p>
         </div>
 
-        <div class="d-flex  justify-content-center w-100 flex-fill px-3 my-5">
+        <div class="d-flex  justify-content-center w-100 flex-fill px-3">
             <div class="w-100" style="text-align: justify;">
                 <p class="text-danger">
                     TERMS & CONDITIONS

@@ -21,8 +21,8 @@ const sweetAlert = {
             title,
             text,
             icon: 'error',
-            timer: 2000, // it will auto close the sweetalert
-            showConfirmButton: false, // Hide the "OK" button when timer is set
+            // timer: 2000, // it will auto close the sweetalert
+            showConfirmButton: true, // Hide the "OK" button when timer is set
             confirmButtonText: 'OK'
         });
     },

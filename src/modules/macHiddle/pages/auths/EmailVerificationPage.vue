@@ -11,7 +11,8 @@
                 style="padding-top: 20px;">
                 <div class="d-flex flex-column align-items-center text-center">
                     <p class="fs-4">OTP has been sent to your email</p>
-                    <p>We've sent an email to <span class="fw-bold">{{ user.email }}</span> to verify your email address, please update
+                    <p>We've sent an email to <span class="fw-bold">{{ user.email }}</span> to verify your email
+                        address, please update
                         OTP in a email
                         verification
                         section and activate your account.
@@ -19,18 +20,19 @@
                     <RouterLink to="/registration-page" class="text-decoration-none" style="cursor: pointer;">Click here
                     </RouterLink>
                     <p> If you would like to change the email address you signed up with.</p>
-                    <div class="w-100 p-2 form-floating ">
-                        <input type="text" class="form-control" id="verifyEmail" placeholder="Enter OTP" v-model="otp">
-                        <label for="verifyEmail">Enter Otp</label>
-                    </div>
+                    <form @submit.prevent="verifyEmail()" class="w-100">
+                        <div class="w-100 p-2 form-floating ">
+                            <input type="text" class="form-control" id="verifyEmail" placeholder="Enter OTP"
+                                v-model="otp" required>
+                            <label for="verifyEmail">Enter Otp</label>
+                        </div>
+                        <p class="text-end" @click="resendOtp()">Resend OTP</p>
+                        <div class="p-2 d-flex justify-content-center">
+                            <button class="btn btn-dark">Submit</button>
+                        </div>
+                    </form>
                 </div>
-                <p class="text-end" @click="resendOtp()">Resend OTP</p>
 
-                <div class="mt-4 p-2 d-flex justify-content-center">
-                    <button class="btn btn-dark" @click="verifyEmail()">
-                        Submit
-                    </button>
-                </div>
 
             </div>
         </div>
@@ -61,11 +63,18 @@ export default {
             this.displayText = "OTP Resent";
         },
         verifyEmail() {
-            const data = {
-                otp: this.otp
+            // Check if OTP has a value
+            if (this.otp) {
+                const data = {
+                    otp: this.otp
+                };
+                this.$store.dispatch('LoggedInUserStore/verifyEmail', data);
+            } else {
+                // Handle the case where OTP is empty or undefined
+                console.error("OTP is empty or undefined. Cannot verify email.");
             }
-            this.$store.dispatch('LoggedInUserStore/verifyEmail', data)
         },
+
         resendOtp() {
             this.$store.dispatch('LoggedInUserStore/resendOtp')
         }
