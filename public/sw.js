@@ -1,26 +1,34 @@
+// For Web push Notification
+
 self.addEventListener('push', function (e) {
-    console.log('inside')
     if (!(self.Notification && self.Notification.permission === 'granted')) {
+        //notifications aren't supported or permission not granted!
         return;
     }
 
     if (e.data) {
-        console.log('resr')
         var msg = e.data.json();
         console.log(msg)
         e.waitUntil(self.registration.showNotification(msg.title, {
             body: msg.body,
             icon: msg.icon,
-            actions: msg.actions
+            actions: msg.actions,
+            data: msg.data,
         }));
     }
 });
 
 self.addEventListener('notificationclick', function (event) {
     // Define the URL to open when the notification is clicked
-    var url = 'https://www.google.com';
+    var url = 'https://clobug.co.in';
 
-    event.notification.close();
+    event.notification.close(); // Close the notification
+
+    //console.log('Notification Data:', event.notification); 
+
+    if (event.notification.data && event.notification.data.url) {
+        url = event.notification.data.url;
+    }
 
     // Open the app or specific page
     event.waitUntil(
@@ -39,30 +47,5 @@ self.addEventListener('notificationclick', function (event) {
         })
     );
 });
-// self.addEventListener('fetch', (event) => {
-//     event.respondWith(
-//         // Try to fetch the request from the network
-//         fetch(event.request).then(function (response) {
-//             console.log('inside fetch in service worker', event.request)
-//             // If successful, clone the response and cache it
-//             if (response.status === 200) {
-//                 var responseToCache = response.clone();
-//                 caches.open('my-new').then(function (cache) {
-//                     cache.add(event.request, responseToCache);
-//                 });
-//             }
-//             return response;
-//         }).catch(async (error) => {
-//             console.log(error);
-//             // If the network request fails, try to get it from the cache
-//             const cachedResponse = await caches.match(event.request);
-//             // If the resource is in the cache, return it
-//             if (cachedResponse) {
-//                 return cachedResponse;
-//             } else if (event.request.mode === 'navigate') {
-//                 // If the request is a navigation request, serve the custom offline page
-//                 return caches.match('/views/OfflinePage.vue');
-//             }
-//         })
-//     );
-// });
+
+// End of Web push notification
