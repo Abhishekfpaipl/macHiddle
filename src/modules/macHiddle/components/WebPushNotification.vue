@@ -17,6 +17,7 @@ export default {
     methods: {
 
         subscribeForNotifications() {
+            console.log('sub')
             if ('serviceWorker' in navigator && 'PushManager' in window) {
                 navigator.serviceWorker.ready
                     .then((registration) => {
@@ -37,15 +38,15 @@ export default {
                         localStorage.setItem('p256dhKey', keys.p256dh);
                         localStorage.setItem('authKey', keys.auth);
                         localStorage.setItem('endpoint', endpoint)
-                        console.log('Stored p256dhKey in localStorage:', keys.p256dh);
-                        console.log('Stored authKey in localStorage:', keys.auth);
+                        // console.log('Stored p256dhKey in localStorage:', keys.p256dh);
+                        // console.log('Stored authKey in localStorage:', keys.auth);
                         // this.storePushSubscription(pushSubscription);
                     })
                     .catch((error) => {
                         console.error('Error subscribing for notifications:', error);
                     });
             } else {
-                console.warn('Push notifications are not supported in this browser.');
+                alert('Push notifications are not supported in this browser.');
             }
         },
         getNoti() {
