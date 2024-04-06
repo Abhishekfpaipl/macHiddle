@@ -1,6 +1,7 @@
 <template>
     <div class="container py-5">
-        <CartStepper></CartStepper>
+        <CartTopNav />
+        <CartStepper />
         <div class="row">
             <div class="col-12 col-md-8">
                 <MiniAddressNav @fullAddress="handleFullAddress" :checkout="checkout" />
@@ -42,15 +43,19 @@
                         <span class="fw-bold">Grand Total:</span>
                         <span>₹ {{ cartProducts.total }}</span>
                     </div>
-                    <router-link to="/payment-page"
-                        class="btn btn-danger rounded-0 d-flex align-items-center justify-content-center">Checkout
-                    </router-link>
+                    <button v-if="checkout.delivery_address" @click="proceedToCheckout()"
+                        class="btn btn-danger rounded-0 text-decoration-none w-100">Place
+                        Order
+                    </button>
+                    <button v-else @click="proceedToCheckout()"
+                        class="btn btn-danger rounded-0 text-decoration-none w-100">Check
+                        Address</button>
 
                 </div>
                 <PriceDetails :cartProducts="cartProducts" />
             </div>
         </div>
-        <CartSummary><template v-slot:btn></template></CartSummary>
+        <!-- <CartSummary><template v-slot:btn></template></CartSummary> -->
     </div>
     <div v-if="cartProducts && cartProducts.products && cartProducts.products.length > 0"
         class="btn-group rounded-0 d-md-none w-100 position-fixed"
@@ -67,14 +72,16 @@
             Order
         </button>
         <button v-else @click="proceedToCheckout()"
-            class="btn btn-danger rounded-0 text-decoration-none d-flex align-items-center justify-content-center">Check Address</button>
+            class="btn btn-danger rounded-0 text-decoration-none d-flex align-items-center justify-content-center">Check
+            Address</button>
     </div>
 </template>
 
 <script>
+import CartTopNav from '@/modules/macHiddle/components/navbar/CartTopNav.vue'
 import CartStepper from './CartStepper.vue';
 import MiniAddressNav from './MiniAddressNav.vue';
-import CartSummary from './CartSummary.vue';
+// import CartSummary from './CartSummary.vue';
 import PriceDetails from './PriceDetails.vue';
 
 export default {
@@ -82,8 +89,9 @@ export default {
     components: {
         CartStepper,
         MiniAddressNav,
-        CartSummary,
-        PriceDetails
+        // CartSummary,
+        PriceDetails,
+        CartTopNav
     },
     data() {
         return {

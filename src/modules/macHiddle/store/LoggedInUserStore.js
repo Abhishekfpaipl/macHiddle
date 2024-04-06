@@ -16,7 +16,8 @@ export default {
         order: {},
         userDetail: {},
         filteredOrders: [],
-        showLogoutButton: false
+        // showLogoutButton: false,
+        allNotifications: [],
     },
     getters: {
         getCart: state => state.cart,
@@ -29,15 +30,16 @@ export default {
         getFilteredOrders: state => state.filteredOrders,
         getOrder: state => state.order,
         getUserDetail: state => state.userDetail,
-        showLogoutButton: state => state.showLogoutButton
+        // showLogoutButton: state => state.showLogoutButton
+        getAllNotifications: state => state.allNotifications,
     },
     mutations: {
         actionDone(state) {
             state.action = true
         },
-        showLogoutBtn(state) {
-            state.showLogoutButton = !state.showLogoutButton
-        },
+        // showLogoutBtn(state) {
+        //     state.showLogoutButton = !state.showLogoutButton
+        // },
         setCart(state, data) {
             state.cart = data
         },
@@ -67,7 +69,11 @@ export default {
         // },
         setFilteredOrders(state, data) {
             state.filteredOrders = [...state.filteredOrders, ...data]
-        }
+        },
+        setAllNotification(state, data) {
+            state.allNotifications = data
+        },
+
     },
     actions: {
         loginUser({ commit }, data) {
@@ -132,6 +138,40 @@ export default {
                     sweetAlert.showSweetError('', error.response.data.message)
                 })
         },
+        fetchAllNotifications({ commit }) {
+            axiosInstance.get('notifications', { headers: { "Authorization": `Bearer ${token}` } })
+                .then((response) => {
+                    if (response.data.status === 'ok') {
+                        commit('setAllNotification', response.data.data)
+                    } else if (response.data.status === 'error') {
+                        alert(response.data.message);
+                    } else {
+                        alert('Something went wrong! Please try again');
+                        sweetAlert.showSweetError('', response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+        },
+        markAsRead({ commit , dispatch}, data) {
+            axiosInstance.put(`notifications/${data}`, {}, { headers: { "Authorization": `Bearer ${token}` } })
+                .then((response) => {
+                    if (response.data.status === 'ok') {
+                        commit('actionDone')
+                        dispatch('fetchAllNotifications')
+                    } else if (response.data.status === 'error') {
+                        alert(response.data.message);
+                    } else {
+                        alert('Something went wrong! Please try again');
+                        sweetAlert.showSweetError('', response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    sweetAlert.showSweetError('', error.response.data.message)
+                })
+        },
         fetchWishlist({ commit }) {
             axiosInstance.get('wishlists', { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
@@ -145,8 +185,8 @@ export default {
                 })
                 .catch(error => {
                     if (error.response && error.response.status === 401) {
-                        // Redirect the user to the login page
-                        router.push('/login-page');
+                        // router.push('/login-page');
+                        console.log('unauthe')
                     } else {
                         console.error('Error:', error);
                         alert('Something went wrong! Please try again');
@@ -157,7 +197,7 @@ export default {
             axiosInstance.post('wishlists', data, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     if (response.data.status === 'ok') {
-                        sweetAlert.showSweetAlert('Yay!', 'Added to Wishlist')
+                        sweetAlert.showSweetAlert('Yay!', 'Wishlist Updated')
                         dispatch('fetchWishlist')
                     } else if (response.data.status === 'error') {
                         alert(response.data.message)
@@ -327,6 +367,10 @@ export default {
             axiosInstance.post('addresses', data, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     commit('actionDone', response)
+                    sweetAlert.showSweetAlert('Yay!', 'You have added a new address')
+                }).catch((error) => {
+                    console.log(error)
+                    sweetAlert.showSweetError('', error.response.data.message)
                 })
         },
         updateAddress({ commit }, data) {
@@ -405,6 +449,13 @@ export default {
         //             }
         //         })
         // },
+
+        fetchFilteredOrderProducts({ commit }, data) {
+            axiosInstance.get('orders/' + data.filter, { headers: { "Authorization": `Bearer ${token}` } })
+                .then((response) => {
+                    commit('setFilteredOrders', response.data.data.order_products)
+                })
+        },
         fetchOrders({ commit }, data) {
             axiosInstance.get('orderproducts', {
                 params: {
@@ -484,11 +535,12 @@ export default {
                     // sweetAlert.showSweetError('', error.reponse.data.message)
                 })
         },
-        logout({ commit }) {
+        logout({ commit, dispatch }) {
             axiosInstance.post('logout', {}, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     if (response.data.status === 'ok') {
                         commit('showLogoutBtn');
+                        dispatch('fetchUserDetail')
                         localStorage.removeItem('token');
                         sweetAlert.showSweetAlert('', 'Logged out successfully')
                     } else if (response.data.status === 'error') {
@@ -498,5 +550,15 @@ export default {
                     }
                 })
         },
+        subscribeNotification({ commit }, data) {
+            axiosInstance.post('push_store', data, { headers: { "Authorization": `Bearer ${token}` } })
+                .then((response) => {
+                    commit('actionDone', response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    // sweetAlert.showSweetError('', error.response.data.message)
+                })
+        }
     }
 }

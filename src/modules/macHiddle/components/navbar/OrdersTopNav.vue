@@ -18,7 +18,7 @@
             </div>
 
             <!-- Brand Logo (Shown on Desktop) -->
-            <div class="d-none d-md-block ml-auto">
+            <div class="d-none d-md-flex justify-content-center align-items-center flex-fill">
                 <router-link to="/">
                     <img :src="`${publicPath}${img}`" style="width: 60px;object-fit: contain;" alt="Brand Logo"
                         class="navbar-brand">

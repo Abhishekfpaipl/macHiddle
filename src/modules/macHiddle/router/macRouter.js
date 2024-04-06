@@ -203,8 +203,19 @@ export default [
     {
         path: '/notification-page',
         name: 'NotificationPage',
-        component: () => import('@/modules/macHiddle/pages/NotificationPage.vue')
+        component: () => import('@/modules/macHiddle/pages/notifications/NotificationPage.vue')
     },
+
+    // {
+    //     path: '/notifications',
+    //     children: [
+    //         {
+    //             path: 'promotions',
+    //             name: 'NotificationPromotionPage',
+    //             component: () => import('@/modules/macHiddle/pages/notifications/NotificationPromotionPage.vue')
+    //         },
+    //     ]
+    // }
 
 ]
 

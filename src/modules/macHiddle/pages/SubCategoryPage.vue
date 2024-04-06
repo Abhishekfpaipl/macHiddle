@@ -7,7 +7,7 @@
             <img :src="bannerDesk" style="width: 100%;">
         </div>
 
-        <div class="container-fluid mt-2">
+        <div v-if="category.length > 0" class="container-fluid mt-2">
             <div class="justify-content-between mb-2 d-flex">
                 <button class="btn btn-dark btn-sm my-2 d-none d-md-block" @click="applyFilters">Apply Filters</button>
                 <button class="d-flex d-md-none gap-2 btn btn-dark rounded-pill" data-bs-toggle="offcanvas"
@@ -54,18 +54,22 @@
             </div>
 
         </div>
-        <p v-if="category.length === 0" class="text-center fw-bold">Oops! No results found..</p>
+        <div v-if="category.length === 0" class="">
+            <NoData />
+        </div>
     </div>
 </template>
 
 <script>
 import ProductCard from '@/modules/macHiddle/components/ProductCard.vue';
 import AllFilters from '@/modules/macHiddle/components/filters/AllFilters.vue';
+import NoData from '@/modules/macHiddle/components/NoData.vue';
 export default {
     name: 'SubCategoryPage',
     components: {
         ProductCard,
-        AllFilters
+        AllFilters,
+        NoData
     },
     data() {
         return {

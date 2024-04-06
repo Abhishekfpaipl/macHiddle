@@ -14,8 +14,7 @@ export default {
     mounted() {
         this.subscribeForNotifications()
     },
-    methods: {
-
+    methods: { 
         subscribeForNotifications() {
             console.log('sub')
             if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -75,40 +74,4 @@ export default {
         },
     }
 };
-</script>
-<style>
-.install-popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #e14e5f;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    animation: slideIn 0.5s ease-in-out
-}
-
-.install-popup-content {
-    text-align: center;
-}
-
-.install-popup button {
-    margin: 10px;
-    padding: 8px 16px;
-    cursor: pointer;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translate(-50%, -70%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translate(-50%, -50%);
-        opacity: 1;
-    }
-}
-</style>
+</script> 

@@ -10,18 +10,14 @@
                 </div>
             </div>
 
-            <div v-if="wishlists.length === 0"
-                class="bg-light w-100 d-flex flex-column justify-content-center align-items-center my-1"
-                style="height: 50%; padding: 90px 0px;">
-                <i class="bi bi-search fs-1"></i>
-                <h3>Hmm, can't find any items.</h3>
+            <div v-if="wishlists.length === 0" class="">
+                <NoData />
             </div>
-
             <div class="container">
                 <div class="row row-cols-2 row-cols-md-3 row-cols-xl-3 g-3">
                     <div class="col " v-for="(wishlist, index) in wishlists" :key="index">
                         <div class="card rounded-0">
-                            <router-link :to="'/product-page/' + wishlist.product.slug"
+                            <router-link :to="'/product-page/' + wishlist.product.sid"
                                 class="text-decoration-none text-dark">
                                 <div :id="'productImages' + index" class="carousel slide">
                                     <div class="carousel-inner">
@@ -83,7 +79,7 @@
                         <div class="row row-cols-2 row-cols-md-3 row-cols-xl-3 g-3">
                             <div class="col " v-for="(wishlist, index) in wishlists" :key="index">
                                 <div class="card rounded-0">
-                                    <router-link :to="'/product-page/' + wishlist.product.slug"
+                                    <router-link :to="'/product-page/' + wishlist.product.sid"
                                         class="text-decoration-none text-dark">
                                         <div :id="'productImages' + index" class="carousel slide">
                                             <div class="carousel-inner">
@@ -126,7 +122,7 @@
                 </div>
 
 
-                <div class="col-4 bg-light position-sticky" style="height: calc(100% - 100px); top:62px">
+                <div class="col-4 bg-light position-sticky pt-3" style="height: calc(100% - 100px); top:62px">
                     <div class="d-flex gap-2">
                         <i class="bi bi-truck"></i>
                         <p>Free Shipping for orders 990</p>
@@ -148,11 +144,14 @@
     </div>
 </template>
 <script>
+
+import NoData from '@/modules/macHiddle/components/NoData.vue';
 import YouMayLike from '@/modules/macHiddle/components/YouMayLike.vue';
 export default {
     name: "SavedProudct",
     components: {
-        YouMayLike
+        YouMayLike,
+        NoData
     },
     computed: {
         wishlists() {

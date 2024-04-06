@@ -1,4 +1,5 @@
 import axiosInstance from "../axiosInstance";
+import router from '@/router';
 import sweetAlert from "../mixins/sweet-alert";
 export default {
     namespaced: true,
@@ -209,11 +210,11 @@ export default {
         searchProducts: [],
         showCollection: [],
         showCollectionFilter: {},
-        searchFilters: []
+        searchFilters: [],
+        check: {},
     },
     getters: {
         getProducts: state => state.products,
-
         getBanners: state => state.banners,
         getCollections: state => state.collections,
         getShowCollection: state => state.showCollection,
@@ -230,6 +231,7 @@ export default {
         getShowCategoryFilter: state => state.showCategoryFilter,
         getShowCollectionFilter: state => state.showCollectionFilter,
         getSearchFilters: state => state.searchFilters,
+        getCheck: state => state.check,
     },
     mutations: {
         setBanners(state, data) {
@@ -240,7 +242,20 @@ export default {
         },
         setAllproducts(state, products) {
             state.allProducts = [...state.allProducts, ...products];
+            // state.allProducts.push(...products);
         },
+        // setAllproducts(state, products) {
+        //     products.forEach(product => {
+        //         // Check if the product with the same slug already exists in allProducts
+        //         const existingProductIndex = state.allProducts.findIndex(existingProduct => existingProduct.slug === product.slug);
+
+        //         // If the product does not exist, add it to the allProducts array
+        //         if (existingProductIndex === -1) {
+        //             state.allProducts.push(product);
+        //         }
+        //     });
+        // },
+
         setCollections(state, data) {
             state.collections = data
         },
@@ -287,16 +302,24 @@ export default {
         setFilteredSearch(state, data) {
             state.searchFilters = { ...state.searchFilters, ...data }
         },
+        setCheck(state, data) {
+            state.check = { ...state.check, ...data }
+        }
     },
     actions: {
         registerUser({ commit }, data) {
             axiosInstance.post('register', data)
                 .then((response) => {
                     commit('actionDone')
-                    sweetAlert.showSweetAlert('', 'You have been registered successfully')
-                    console.log('data sent', response)
+                    // sweetAlert.showSweetAlert('', 'You have been registered successfully')
+                    // console.log('data sent', response)
+                    const token = response.data.token;
+                    localStorage.setItem('token', token);
+                    console.log('Registered successfully. Token stored:', token);
+                    router.push('/')
                 }).catch((error) => {
                     console.log('error', error)
+                    sweetAlert.showSweetError('', error.response.data.message)
                 })
         },
         forgotPassword({ commit }, data) {
@@ -311,7 +334,7 @@ export default {
                     sweetAlert.showSweetError('', error.response.data.message)
                 });
         },
-       
+
         fetchBanners({ commit }) {
             axiosInstance.get('banners').then(response => {
                 // console.log('store', response.data.data)
@@ -366,15 +389,27 @@ export default {
                 commit('setProduct', response.data.data)
             })
         },
-        fetchProducts({ commit }, page) {
+        fetchProducts({ commit, dispatch }, page) {
             axiosInstance.get(`products?page=${page}`).then((response) => {
                 if (response.data.status === 'ok') {
                     const products = response.data.data.data;
                     if (products.length > 0) {
                         commit('setAllproducts', products);
+                        dispatch('fetchProductsCheck', page)
                     } else {
                         console.warn('No products found in response.');
                     }
+                } else if (response.data.status === 'error') {
+                    alert(response.data.message);
+                } else {
+                    alert('Something went wrong! Please try again');
+                }
+            });
+        },
+        fetchProductsCheck({ commit }, page) {
+            axiosInstance.get(`products?page=${page}`).then((response) => {
+                if (response.data.status === 'ok') {
+                    commit('setCheck', response.data.data);
                 } else if (response.data.status === 'error') {
                     alert(response.data.message);
                 } else {

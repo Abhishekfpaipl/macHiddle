@@ -1,8 +1,8 @@
 <template>
   <TopNav v-if="!hide" />
-  <!-- <div style="margin-top: 60px;"> -->
-  <router-view />
-  <!-- </div> -->
+  <transition name="fade" mode="out-in">
+    <router-view />
+  </transition>
   <bottom-nav v-if="!hidden" />
 </template>
 
@@ -36,6 +36,16 @@ export default {
 
 .smaller {
   font-size: 12px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .truncate {

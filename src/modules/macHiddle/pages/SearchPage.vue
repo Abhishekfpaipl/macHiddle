@@ -1,13 +1,15 @@
 <template>
     <div class="mt-5 pt-3">
         <div class="d-flex align-items-center shadow p-2">
-            <span class=""><i class="bi bi-arrow-left-short fs-3"></i></span>
+            <router-link to="/" class="text-dark">
+                <i class="bi bi-arrow-left-short fs-3"></i>
+            </router-link>
             <input type="search" placeholder="Search for Products?" v-model="searchTerm"
                 class="form-control border-0" ref="searchInput" @keyup.enter="search">
-            <div class="micbutton">
-                <span class="fa fa-microphone mic-icon-mobile"></span>
-            </div>
-            <div class="searchbutton">
+            <!-- <div class="">
+                <span class="bi bi-mic-fill"></span>
+            </div> -->
+            <div class="">
                 <i class="bi bi-search" @click="search"></i>
             </div>
         </div>

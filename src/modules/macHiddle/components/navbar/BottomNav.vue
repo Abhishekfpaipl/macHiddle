@@ -55,7 +55,7 @@ export default {
                 // },
             ]
         }
-    },
+    }, 
     methods: {
         isLinkActive(link) {
             return this.$route.matched.some((route) => {

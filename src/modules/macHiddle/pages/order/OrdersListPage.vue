@@ -35,24 +35,27 @@
 
                 <button class="btn btn-outline-danger w-100" @click="logOut()">Logout</button>
             </div>
-            <button class="btn btn-dark d-flex d-md-none gap-2 rounded-pill my-2" data-bs-toggle="collapse"
-                href="#orderSort" role="button" aria-expanded="false" aria-controls="orderSort">
-                <i class="bi bi-sliders"></i>
-                <p class="mb-0">Filter By</p>
-            </button>
-            <div class="collapse" id="orderSort">
-                <div class="p-2 border-top" style="background-color: #00000020;">
-                    <div v-for="(order, index) in orderStatus" :key="index" class="btn-group m-1" role="group"
-                        aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" class="btn-check" :id="order.id" @click="changeStatus(order.value)" />
-                        <label class=" btn btn-outline-dark rounded-0" :for="order.id">
-                            {{ order.name }}
-                        </label>
+            <div v-if="orderStatus.length > 0" class="">
+                <button class="btn btn-dark d-flex d-md-none gap-2 rounded-pill my-2" data-bs-toggle="collapse"
+                    href="#orderSort" role="button" aria-expanded="false" aria-controls="orderSort">
+                    <i class="bi bi-sliders"></i>
+                    <p class="mb-0">Filter By</p>
+                </button>
+                <div class="collapse" id="orderSort">
+                    <div class="p-2 border-top" style="background-color: #00000020;">
+                        <div v-for="(order, index) in orderStatus" :key="index" class="btn-group m-1" role="group"
+                            aria-label="Basic checkbox toggle button group">
+                            <input type="checkbox" class="btn-check" :id="order.id"
+                                @click="changeStatus(order.value)" />
+                            <label class=" btn btn-outline-dark rounded-0" :for="order.id">
+                                {{ order.name }}
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="w-100">
+            <div v-if="orderStatus.length > 0" class="w-100">
                 <div v-for="(order, index) in filteredOrders" :key="index">
                     <div class="border p-1 mb-2">
                         <router-link :to="'/orders/detail/' + order.sid" class="d-flex text-decoration-none text-dark">
@@ -86,7 +89,9 @@
                     </div>
                 </div>
             </div>
-
+            <div v-if="orderStatus.length === 0" class="">
+                <NoData />
+            </div>
         </div>
         <!-- <OrderDetailCard :orders="getOrdersByStatus" /> -->
     </div>
@@ -96,13 +101,15 @@
 // import OrderDetailCard from '@/modules/macHiddle/pages/order/OrderDetailCard.vue';
 import OrdersTopNav from '@/modules/macHiddle/components/navbar/OrdersTopNav.vue';
 import StarRating from '@/modules/macHiddle/pages/order/StarRating.vue';
+import NoData from '../../components/NoData.vue';
 // import { mapActions, mapGetters } from 'vuex';
 export default {
     name: 'OrdersPage',
     components: {
         // OrderDetailCard,
         OrdersTopNav,
-        StarRating
+        StarRating,
+        NoData
     },
     data() {
         return {
@@ -129,11 +136,14 @@ export default {
             // Check if queryParams has either order_sid or suborder_sid
             if (Object.prototype.hasOwnProperty.call(queryParams, 'order_sid') || Object.prototype.hasOwnProperty.call(queryParams, 'suborder_sid')) {
                 const data = {
-                    page: this.page,
-                    status: this.selectedStatus,
-                    filter: queryParams.order_sid || queryParams.suborder_sid
+                    // page: this.page,
+                    // status: this.selectedStatus,
+                    // filter: queryParams.order_sid || queryParams.suborder_sid
+                    filter: queryParams.order_sid
                 };
-                this.fetchOrders(data);
+
+                this.$store.dispatch('LoggedInUserStore/fetchFilteredOrderProducts', data)
+                // this.fetchOrders(data);
             } else {
                 const data = {
                     page: this.page,

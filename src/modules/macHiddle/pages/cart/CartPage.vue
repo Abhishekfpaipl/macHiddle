@@ -1,6 +1,6 @@
 <template>
     <CartTopNav />
-    <div class="container pb-5 mt-5">
+    <div class="container py-3 mt-5">
         <CartStepper />
         <div v-if="cartProducts && cartProducts.products && cartProducts.products.length === 0"
             class="bg-light w-100 d-flex flex-column justify-content-center align-items-center my-1"
@@ -218,18 +218,18 @@ export default {
     },
     mounted() {
         this.$store.dispatch('LoggedInUserStore/fetchCart')
-            .then((response) => {
-                console.log('length check', response)
-                this.checkCartLength();
-            });
+            // .then((response) => {
+            //     console.log('length check', response)
+            //     this.checkCartLength();
+            // });
         this.$store.dispatch('LoggedInUserStore/fetchAddresses');
     },
     methods: {
-        checkCartLength() {
-            if (this.cartProducts.length <= 0) {
-                this.$router.push('/login-page');
-            }
-        },
+        // checkCartLength() {
+        //     if (this.cartProducts.length <= 0) {
+        //         this.$router.push('/login-page');
+        //     }
+        // },
         getQuantityOptions(cart) {
             const options = [];
             for (let i = cart.boq; i <= cart.moq; i++) {

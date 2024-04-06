@@ -1,43 +1,66 @@
 <template>
-    <div class="container pt-2 py-3 my-5">
+    <OrdersTopNav />
+    <div class="container py-3 my-5">
         <p class="my-1 fw-bold">View Order Details</p>
         <div class="d-flex justify-content-between my-2 rounded border p-2 my-2">
-            <div class="">
-                <p class="mb-1">Order Date</p>
-                <p class="mb-1">Order #</p>
-                <p class="mb-1">Order Total</p>
+            <div class="w-50">
+                <p class="mb-1 small">Order Date</p>
+                <p class="mb-1 small">Order Total</p>
+                <p class="mb-1 small">Order #</p>
             </div>
             <div class="">
-                <p class="mb-1">{{ formatDate(order.created_at) }}</p>
-                <p class="mb-1">{{ order.id }}</p>
-                <p class="mb-1">{{ order.amount }}</p>
+                <p class="mb-1 small">{{ formatDate(order.created_at) }}</p>
+                <p class="mb-1 small">{{ order.amount }}</p>
+                <p class="mb-1 small">{{ order.sid }}</p>
             </div>
         </div>
-        <router-link v-if="order.product" :to="'/product-page/' + order.product.sid" class="d-flex text-decoration-none text-dark">
+        <!-- <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row">Order Date</th>
+                        <td>{{ formatDate(order.created_at) }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Order #</th>
+                        <td>{{ order.sid }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Order Total</th>
+                        <td>{{ order.amount }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
+
+        <router-link v-if="order.product" :to="'/product-page/' + order.product.sid"
+            class="d-flex text-decoration-none text-dark">
             <img v-if="order.product && order.product.option" :src="order.product.option.primary_image" class=""
                 style="width: 125px;object-fit: fill;">
             <div class="ms-2">
                 <p class="fw-bold mb-0" v-if="order.product && order.product.name">{{
-                    order.product.name
-                }}</p>
+                            order.product.name
+                        }}</p>
                 <small v-if="order.product && order.product.category" class="text-muted">{{
-                    order.product.category.name }}</small>
+                            order.product.category.name }}</small>
                 <div class="">
                     <span v-if="order.product && order.product.range" class="text-capitalize">Size :
                         {{ order.product.range.name }}</span>
                     <span class="mx-2">|</span>
                     <span>Qty :{{ order.quantity }}</span>
                 </div>
-                <b v-if="order.payment">₹ {{ order.payment.amount }}</b>
+                <!-- <b v-if="order.payment">₹ {{ order.payment.amount }}</b> -->
+                <b v-if="order.payment">₹ {{ order.total }}</b>
                 <p class="mb-1 text-muted small">Return period for this product has been expired.</p>
-                <p class="mb-1 text-danger small">You have initiated request to cancel the order
+                <p v-if="order.cancelled" class="mb-1 text-danger small">You have initiated request to cancel the order
                     .</p>
             </div>
         </router-link>
-        <div v-if="!order.cancelled" class="">
-            <textarea class="form-control my-2" v-model="cancelOrderReason"
+        <div   class="">
+            <textarea v-if="order.status === 'pending'" class="form-control my-2" v-model="cancelOrderReason"
                 placeholder="Enter Reject Reason"></textarea>
-            <button v-if="order.status === 'pending'" class="btn btn-danger my-2" @click="cancelOrder(order.sid)">Cancel
+            <button v-if="order.status === 'pending'" class="btn btn-danger my-2"
+                @click="cancelOrder(order.sid)">Cancel
                 Order</button>
         </div>
         <div class="my-2">
@@ -71,8 +94,13 @@
 </template>
 
 <script>
+import OrdersTopNav from '@/modules/macHiddle/components/navbar/OrdersTopNav.vue';
+
 export default {
     name: "OrderDetailPage",
+    components: {
+        OrdersTopNav
+    },
     data() {
         return {
             orderId: null,

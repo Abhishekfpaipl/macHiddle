@@ -1,34 +1,33 @@
 <template>
-    <div class="accordion my-2" id="accordionExample">
-        <div class="accordion-item rounded-0">
-            <h2 class="accordion-header">
-                <button class="accordion-button p-2" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#productDetails" aria-expanded="false" aria-controls="productDetails">
-                    <p class="fw-bold mb-1">Product Details</p>
-                </button>
-            </h2>
-            <div id="productDetails" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <div class="d-flex justify-content-between" v-for="(att, index) in product.attributes" :key="index">
-                        <strong class="fw-bold text-capitalize">{{ att.name }}:</strong>
-                        <p class="text-capitalize text-muted">{{ att.value }}</p>
+    <div>
+        <div class="card mb-3 rounded-0">
+            <div class="card-header fw-bold">Product Details</div>
+            <div class="card-body border smaller py-2">
+                <div class="row">
+                    <div v-for="(attribute, index) in product.attributes" :key="index" class="py-2"
+                        :class="['col-6', 'border-bottom', { 'border-end': index % 2 === 0 }]"
+                        :style="{ borderColor: 'rgb(236, 236, 236) !important;' }">
+                        <span class="d-block fw-bold ls-1 op-6 text-capitalize">{{ attribute.name }}</span>
+                        <span class="d-block text-dark text-capitalize text-muted">{{ attribute.value }}</span>
                     </div>
                 </div>
+                <button @click="toggleView"
+                    class="btn text-muted pt-3 px-0 border-0 d-flex justify-content-between w-100">
+                    <span class="smaller">{{ viewMoreText }}</span>
+                    <i :class="[showAll ? 'bi bi-chevron-up' : 'bi bi-chevron-down']"></i>
+                </button>
             </div>
         </div>
-    </div>
-    <div class="accordion my-2" id="accordionExample">
-        <div class="accordion-item rounded-0">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#productDescription" aria-expanded="false" aria-controls="productDescription">
-                    <p class="fw-bold mb-1">Description</p>
-                </button>
-            </h2>
-            <div id="productDescription" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    {{ product.details }}
-                </div>
+
+
+        <div class="card rounded-0">
+            <div class="card-header fw-bold">
+                Product Description
+            </div>
+            <div class="card-body">
+                <p>{{ truncatedDescription }} 
+                    <span class="btn btn-link p-0" @click="toggleDescription">{{ showFullDescription ? 'View Less' : 'View More' }}</span>
+                </p>
             </div>
         </div>
     </div>
@@ -36,8 +35,38 @@
 
 <script>
 export default {
-    props: ['product']
+    props: ['product'],
+    data() {
+        return {
+            showAll: false,
+            initialDetailsToShow: 2,
+            showFullDescription: false,
+            maxDescriptionLength: 10,
+            para: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure sit labore iusto! Voluptate nostrum beatae totam unde enim eaque necessitatibus qui ut.Sapiente, porro reiciendis et obcaecati itaque libero, explicabo necessitatibus consectetur facilis aperiam non animi fugiat tenetur.Ab cum iste quasi nobis expedita vero porro? Harum, facilis itaque."
+        }
+    },
+    computed: {
+        detailsToShow() {
+            return this.showAll ? this.product.attributes : this.product.attributes.slice(0, this.initialDetailsToShow);
+        },
+        viewMoreText() {
+            return this.showAll ? 'View Less' : 'View More';
+        },
+        truncatedDescription() {
+            if (this.showFullDescription) {
+                return this.para;
+            } else {
+                return this.para.split(' ').slice(0, this.maxDescriptionLength).join(' ') + (this.para.split(' ').length > this.maxDescriptionLength ? '...' : '');
+            }
+        }
+    },
+    methods: {
+        toggleView() {
+            this.showAll = !this.showAll;
+        },
+        toggleDescription() {
+            this.showFullDescription = !this.showFullDescription;
+        }
+    }
 }
 </script>
-
-<style lang="scss" scoped></style>
