@@ -1,5 +1,5 @@
 <template>
-    <div  class="row row-cols-3 row-cols-md-4 g-2">
+    <div class="row row-cols-2 row-cols-md-4 g-2">
         <div class="col" v-for="(product, index) in products" :key="index">
             <div class="card rounded-0 show-on-hover">
                 <router-link :to="'/product-page/' + product.sid" class="text-decoration-none text-dark">
@@ -38,7 +38,7 @@
                     </div>
                     <div v-if="similar" class="wh-40 bg-light  rounded-circle px-1">
                         <i class="bi bi-bookmarks" data-bs-toggle="offcanvas" data-bs-target="#similarProducts"
-                            aria-controls="similarProducts"></i>
+                            :data-bs-productsid="product.category.sid" aria-controls="similarProducts"></i>
                     </div>
                 </div>
 

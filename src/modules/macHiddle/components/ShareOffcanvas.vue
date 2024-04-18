@@ -10,9 +10,10 @@
                     <div class="container">
                         <div class="row g-2">
                             <div class="col-6" v-for="(icon, index) in shareIcons" :key="index">
-                                <div class="d-flex flex-column align-items-center border p-2">
-                                    <i class="bi fs-1 text-primary" :class="icon.icon"></i>
-                                    <span>{{ icon.name }}</span>
+                                <div class="d-flex flex-column align-items-center p-2">
+                                    <i class="fs-1 text-primary border p-3 px-4" :class="icon.icon"
+                                        @click="shareContent(icon)"></i>
+                                    <span span> {{ icon.name }}</span>
                                 </div>
                             </div>
                         </div>
@@ -32,12 +33,27 @@ export default {
     data() {
         return {
             shareIcons: [
-                { id: 1, icon: 'bi-whatsapp', name: 'WhatsApp', },
-                { id: 2, icon: 'bi-instagram', name: 'Instagram' },
-                { id: 3, icon: 'bi-facebook', name: 'Facebook' },
-                { id: 3, icon: 'bi-copy', name: 'Copy Link' },
+                { icon: 'bi bi-whatsapp', name: 'WhatsApp', url: 'https://wa.me/' },
+                { icon: 'bi bi-instagram', name: 'Instagram', url: 'https://www.instagram.com/' },
+                { icon: 'bi bi-facebook', name: 'Facebook', url: 'https://www.facebook.com/' },
+                { icon: 'bi bi-copy', name: 'Copy', url: null }
             ]
         }
+    },
+    methods: {
+        shareContent(platform) {
+            let shareUrl;
+            if (platform.name === 'Copy') {
+                const shareUrl = `https://app.macHiddle.com${this.$route.path}`;
+                // Copy the link to clipboard
+                navigator.clipboard.writeText(shareUrl);
+            } else {
+                const url = `https://app.macHiddle.com${this.$route.path}`;
+                shareUrl = platform.url + '?url=' + encodeURIComponent(url);
+            }
+            // console.log(shareUrl)
+            window.open(shareUrl);
+        },
     }
 }
 </script>

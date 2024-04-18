@@ -1,7 +1,6 @@
 <template>
     <div class="container my-2">
         <div class="row bg-white">
-            <p class="fw-bold border-bottom p-2">Attributes</p>
             <div v-for="(badge, index) in badges" :key="index" class="col-4 col-md-6 col-lg-4 mb-3">
                 <div class="text-center">
                     <div style="min-height: 35px;">

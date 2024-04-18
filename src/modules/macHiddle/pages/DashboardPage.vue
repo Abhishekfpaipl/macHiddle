@@ -26,12 +26,13 @@
         </div>
 
         <div v-if="Object.keys(categories).length > 0" class="d-flex overflow-x-scroll my-4" id="scroll">
-            <div class="d-flex flex-column align-items-center px-2" v-for="(category, index) in categories"
-                :key="index">
+            <router-link to="/categories"
+                class="d-flex flex-column align-items-center px-2 text-decoration-none text-dark"
+                v-for="(category, index) in categories" :key="index">
                 <img :src="category.primary_image" class="rounded-circle"
                     style="width:80px; height: 80px; object-fit: cover;">
                 <strong>{{ category.name }}</strong>
-            </div>
+            </router-link>
         </div>
 
         <div v-else class="container-fluid placeholder-glow my-1">

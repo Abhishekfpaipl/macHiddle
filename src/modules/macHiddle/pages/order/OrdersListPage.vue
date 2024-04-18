@@ -4,8 +4,8 @@
         <div class=" d-md-flex d-block container mb-4 w-100">
             <div class="d-md-block d-none  w-25 me-3">
                 <div class="d-flex flex-column p-3 bg-light">
-                    <b>macHiddle</b>
-                    <small>macHiddle@gmail.com</small>
+                    <strong class="text-capitalize">{{ user.name }}</strong>
+                    <small class="text-muted">{{ user.email }}</small>
                     <small class="text-danger">Get Membership Now</small>
                 </div>
                 <div class="form-group">
@@ -19,18 +19,16 @@
                         <option value="">All</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="statusSelect">Group By:</label>
                     <select class="form-control" id="statusSelect" v-model="queryParams"
                         @change="changeGroupBy(groupBy)">
                         <option value="order_id">Order Id</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="list-group py-2">
-                    <p class=" mb-0 list-group-item">Track Order</p>
-                    <p class=" mb-0 list-group-item">Saved card</p>
-                    <p class=" mb-0 list-group-item">FAQs</p>
-                    <p class=" mb-0 list-group-item">Profile</p>
+                    <router-link :to="link.path" class=" mb-0 list-group-item" v-for="(link, index) in links"
+                        :key="index">{{ link.name }}</router-link>
                 </div>
 
                 <button class="btn btn-outline-danger w-100" @click="logOut()">Logout</button>
@@ -55,7 +53,8 @@
                 </div>
             </div>
 
-            <div v-if="orderStatus.length > 0" class="w-100">
+            <div v-if="Object.keys(filteredOrders).length > 0" class="w-100">
+                <div class="text-uppercase text-muted fw-bold my-3">My Orders</div>
                 <div v-for="(order, index) in filteredOrders" :key="index">
                     <div class="border p-1 mb-2">
                         <router-link :to="'/orders/detail/' + order.sid" class="d-flex text-decoration-none text-dark">
@@ -89,7 +88,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="orderStatus.length === 0" class="">
+            <div v-else class="flex-fill d-flex justify-content-center aling-items-center">
                 <NoData />
             </div>
         </div>
@@ -124,6 +123,12 @@ export default {
                 { id: 'Cancelled', name: 'Cancelled', value: 'Cancelled' },
                 { id: 'Completed', name: 'Completed', value: 'Completed' },
                 { id: 'All', name: 'All', value: '' },
+            ],
+            links:[
+                {id:1, name:'Track Order', path:''},
+                {id:2, name:'Saved card', path:''},
+                {id:3, name:'Return Policy', path:'/return-policy'},
+                {id:4, name:'Profile', path:'/myAccount'},
             ]
         };
     },
@@ -142,7 +147,7 @@ export default {
                     filter: queryParams.order_sid
                 };
 
-                this.$store.dispatch('LoggedInUserStore/fetchFilteredOrderProducts', data)
+                this.$store.dispatch('LoggedInUserStore/fetchCancelledOrderProducts', data)
                 // this.fetchOrders(data);
             } else {
                 const data = {
@@ -160,7 +165,7 @@ export default {
             console.log('status', data)
             this.fetchOrders(data);
         }
-
+        this.$store.dispatch('LoggedInUserStore/fetchUserDetail')
         window.addEventListener('scroll', this.handleScroll);
     },
     unmounted() {
@@ -172,6 +177,9 @@ export default {
         },
         filteredOrders() {
             return this.$store.getters['LoggedInUserStore/getFilteredOrders']
+        },
+        user() {
+            return this.$store.getters['LoggedInUserStore/getUserDetail']
         }
     },
     methods: {

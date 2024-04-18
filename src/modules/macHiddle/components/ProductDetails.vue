@@ -1,33 +1,60 @@
 <template>
     <div>
-        <div class="card mb-3 rounded-0">
-            <div class="card-header fw-bold">Product Details</div>
-            <div class="card-body border smaller py-2">
-                <div class="row">
-                    <div v-for="(attribute, index) in product.attributes" :key="index" class="py-2"
-                        :class="['col-6', 'border-bottom', { 'border-end': index % 2 === 0 }]"
-                        :style="{ borderColor: 'rgb(236, 236, 236) !important;' }">
-                        <span class="d-block fw-bold ls-1 op-6 text-capitalize">{{ attribute.name }}</span>
-                        <span class="d-block text-dark text-capitalize text-muted">{{ attribute.value }}</span>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Attributes
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div v-for="(attribute, index) in product.attributes" :key="index" class="py-2"
+                                :class="['col-6', 'border-bottom', { 'border-end': index % 2 === 0 }]">
+                                <span class="small d-block fw-bold ls-1 op-6 text-capitalize">{{ attribute.name
+                                    }}</span>
+                                <span class="small d-block text-dark text-capitalize text-muted">{{ attribute.value
+                                    }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button @click="toggleView"
-                    class="btn text-muted pt-3 px-0 border-0 d-flex justify-content-between w-100">
-                    <span class="smaller">{{ viewMoreText }}</span>
-                    <i :class="[showAll ? 'bi bi-chevron-up' : 'bi bi-chevron-down']"></i>
-                </button>
             </div>
-        </div>
-
-
-        <div class="card rounded-0">
-            <div class="card-header fw-bold">
-                Product Description
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        Discription
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">{{ product.details }} Lorem ipsum dolor sit amet consectetur adipisicing
+                        elit. A doloribus vitae ipsam distinctio, vel maxime! Beatae praesentium alias illo repudiandae,
+                        eligendi mollitia corrupti incidunt perspiciatis, unde, laudantium ipsam inventore explicabo?
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <p>{{ truncatedDescription }} 
-                    <span class="btn btn-link p-0" @click="toggleDescription">{{ showFullDescription ? 'View Less' : 'View More' }}</span>
-                </p>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        Artist Details
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div v-if="product.designer" class="">
+                            <img :src="product.designer.image" style="height: 50px;width: 50px; object-fit: cover;">
+                            <span class="ms-3 fw-bold text-capitalize">{{ product.designer.name }}</span>
+                            <div class="my-2">{{ product.designer.details }} Lorem ipsum dolor sit amet consectetur adipisicing
+                                elit. Tenetur sit accusantium magnam doloremque. Omnis obcaecati quod ut cupiditate quo
+                                eum.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -36,37 +63,5 @@
 <script>
 export default {
     props: ['product'],
-    data() {
-        return {
-            showAll: false,
-            initialDetailsToShow: 2,
-            showFullDescription: false,
-            maxDescriptionLength: 10,
-            para: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure sit labore iusto! Voluptate nostrum beatae totam unde enim eaque necessitatibus qui ut.Sapiente, porro reiciendis et obcaecati itaque libero, explicabo necessitatibus consectetur facilis aperiam non animi fugiat tenetur.Ab cum iste quasi nobis expedita vero porro? Harum, facilis itaque."
-        }
-    },
-    computed: {
-        detailsToShow() {
-            return this.showAll ? this.product.attributes : this.product.attributes.slice(0, this.initialDetailsToShow);
-        },
-        viewMoreText() {
-            return this.showAll ? 'View Less' : 'View More';
-        },
-        truncatedDescription() {
-            if (this.showFullDescription) {
-                return this.para;
-            } else {
-                return this.para.split(' ').slice(0, this.maxDescriptionLength).join(' ') + (this.para.split(' ').length > this.maxDescriptionLength ? '...' : '');
-            }
-        }
-    },
-    methods: {
-        toggleView() {
-            this.showAll = !this.showAll;
-        },
-        toggleDescription() {
-            this.showFullDescription = !this.showFullDescription;
-        }
-    }
 }
 </script>

@@ -39,10 +39,10 @@
                 style="width: 125px;object-fit: fill;">
             <div class="ms-2">
                 <p class="fw-bold mb-0" v-if="order.product && order.product.name">{{
-                            order.product.name
-                        }}</p>
+                    order.product.name
+                }}</p>
                 <small v-if="order.product && order.product.category" class="text-muted">{{
-                            order.product.category.name }}</small>
+                    order.product.category.name }}</small>
                 <div class="">
                     <span v-if="order.product && order.product.range" class="text-capitalize">Size :
                         {{ order.product.range.name }}</span>
@@ -52,16 +52,23 @@
                 <!-- <b v-if="order.payment">₹ {{ order.payment.amount }}</b> -->
                 <b v-if="order.payment">₹ {{ order.total }}</b>
                 <p class="mb-1 text-muted small">Return period for this product has been expired.</p>
-                <p v-if="order.cancelled" class="mb-1 text-danger small">You have initiated request to cancel the order
+                <p v-if="order.order_product_cancel.status === 'pending'" class="mb-1 text-danger small">You have
+                    initiated request to cancel the order
                     .</p>
             </div>
         </router-link>
-        <div   class="">
-            <textarea v-if="order.status === 'pending'" class="form-control my-2" v-model="cancelOrderReason"
+        <div
+            v-if="order.order_product_cancel && order.order_product_cancel.status !== 'pending' && order.status === 'pending'">
+
+            <textarea class="form-control my-2" v-model="cancelOrderReason"
                 placeholder="Enter Reject Reason"></textarea>
-            <button v-if="order.status === 'pending'" class="btn btn-danger my-2"
-                @click="cancelOrder(order.sid)">Cancel
+            <button class="btn btn-danger my-2" @click="cancelOrder(order.sid, 'cancelled')">Cancel
                 Order</button>
+        </div>
+        <div v-else class="my-2">
+            <div v-if="order.order_product_cancel" class="alert alert-danger"><strong>Your Reason:</strong> {{
+                order.order_product_cancel.reason }}</div>
+            <button @click="cancelOrder(order.sid, 'reorder')" class="btn btn-success">Withdraw Cancel Request</button>
         </div>
         <div class="my-2">
             <p class="mb-1 fw-bold">Order Summary</p>
@@ -126,10 +133,11 @@ export default {
             const formattedTime = new Date(dateTimeString).toLocaleDateString('en-US', options);
             return formattedTime;
         },
-        cancelOrder(activeOrderId) {
+        cancelOrder(activeOrderId, status) {
             console.log(activeOrderId)
             const data = {
                 reason: this.cancelOrderReason,
+                status: status,
                 order_sid: activeOrderId
             }
             this.$store.dispatch('LoggedInUserStore/cancelOrder', data)

@@ -36,19 +36,19 @@
     </div> -->
 
     <nav>
-        <div class="nav nav-tabs d-flex justify-content-around pt-1" id="nav-tab" role="tablist"
+        <div class="nav nav-tabs d-flex justify-content-start pt-1" id="nav-tab" role="tablist"
             style="background-color: var(--secondary-color);">
             <button class="nav-link active" id="Activity-tab" data-bs-toggle="tab" data-bs-target="#Activity"
                 type="button" role="tab" aria-controls="Activity" aria-selected="true">Activity</button>
 
-            <button class="nav-link" id="Offers-tab" data-bs-toggle="tab" data-bs-target="#Offers" type="button"
+            <!-- <button class="nav-link" id="Offers-tab" data-bs-toggle="tab" data-bs-target="#Offers" type="button"
                 role="tab" aria-controls="Offers" aria-selected="false">Offers</button>
 
             <button class="nav-link" id="Promotions-tab" data-bs-toggle="tab" data-bs-target="#Promotions" type="button"
                 role="tab" aria-controls="Promotions" aria-selected="false">Promotions</button>
 
             <button class="nav-link" id="All-tab" data-bs-toggle="tab" data-bs-target="#All" type="button" role="tab"
-                aria-controls="All" aria-selected="false">All</button>
+                aria-controls="All" aria-selected="false">All</button> -->
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
@@ -56,7 +56,7 @@
         <!-- Activity Tab -->
         <div class="tab-pane fade show active px-2" id="Activity" role="tabpanel" aria-labelledby="Activity-tab"
             tabindex="0">
-            <div v-for="(notification, index) in notifications.intimations" :key="index" class="">
+            <div v-for="(notification, index) in notifications" :key="index" class="">
                 <div v-if="notification.data && !notification.read_at"
                     class="d-flex justify-content-between my-2 border p-2" data-bs-dismiss="offcanvas">
                     <router-Link
@@ -75,6 +75,8 @@
                             <p class="mb-1 small">{{ formatDate(notification.created_at) }}</p>
                         </div>
 
+
+
                         <div v-if="notification.data.subject === 'order-create' || notification.data.subject === 'order-product-cancel-req'"
                             class="">
                             <p class="small mb-0">Hi, <span class="text-capitalize">{{ user ? user.name : 'Unknown'
@@ -91,10 +93,12 @@
                             </p>
                         </div>
                         <div v-if="notification.data.subject === 'order-update' && notification.data.body && notification.data.body.status === 'cancelled'"
-                            class="mb-0">
+                            class="mb-0 small">
                             Hi, <span class="text-capitalize">{{ user.name }}</span>, due to some issues, we had to
                             cancel your order. Sorry for the inconvenience.
                         </div>
+
+
 
                         <div v-if="notification.data.subject === 'delivery-update' &&
                             notification.data.body && notification.data.body.delivery &&
@@ -136,10 +140,18 @@
                             </p>
                         </div>
                         <div v-if="notification.data.subject === 'order-update' && notification.data.body && notification.data.body.status === 'cancelled'"
-                            class="mb-0">
+                            class="mb-0 small">
                             Hi, <span class="text-capitalize">{{ user.name }}</span>, due to some issues, we had to
                             cancel your order. Sorry for the inconvenience.
                         </div>
+
+                        <div v-if="notification.data.subject === 'withdraw-cancel-req'" class="mb-0 small">
+                            Hi, <span class="text-capitalize">{{ user.name }}</span>, You have withdrawn the request to
+                            cancel <span
+                                v-if="notification.data && notification.data.body && notification.data.body.product">{{
+                                    notification.data.body.product.name }}</span>.
+                        </div>
+
 
                         <div v-if="notification.data.subject === 'delivery-update' &&
                             notification.data.body && notification.data.body.delivery &&
@@ -155,10 +167,11 @@
                     <i class="bi bi-check2-circle" @click="markAsReady(notification)"></i>
                 </div>
             </div>
+
         </div>
 
         <!-- Offers Tab -->
-        <div class="tab-pane fade px-2" id="Offers" role="tabpanel" aria-labelledby="Offers-tab" tabindex="0">
+        <!-- <div class="tab-pane fade px-2" id="Offers" role="tabpanel" aria-labelledby="Offers-tab" tabindex="0">
             <div v-for="(notification, index) in notifications.offers" :key="index" class="">
                 <div v-if="notification.data && !notification.read_at">
                     <div class=" d-flex justify-content-between my-2 border p-2 text-dark">
@@ -184,10 +197,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Promotions Tab -->
-        <div class="tab-pane fade px-2" id="Promotions" role="tabpanel" aria-labelledby="Promotions-tab" tabindex="0">
+        <!-- <div class="tab-pane fade px-2" id="Promotions" role="tabpanel" aria-labelledby="Promotions-tab" tabindex="0">
             <div v-for="(notification, index) in notifications.promotions" :key="index" class="">
                 <div v-if="notification.data && !notification.read_at">
                     <div class=" d-flex justify-content-between my-2 border p-2 text-dark">
@@ -212,12 +225,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- All Read Tab -->
-        <div class="tab-pane fade px-2" id="All" role="tabpanel" aria-labelledby="All-tab" tabindex="0">
+        <!-- <div class="tab-pane fade px-2" id="All" role="tabpanel" aria-labelledby="All-tab" tabindex="0">
 
-            <!-- intimations -->
             <div v-for="(notification, index) in notifications.intimations" :key="index" class="">
                 <div v-if="notification.data && notification.read_at"
                     class="d-flex justify-content-between my-2 border p-2" data-bs-dismiss="offcanvas">
@@ -257,7 +269,6 @@
                 </div>
             </div>
 
-            <!-- offers -->
             <div v-for="(notification, index) in notifications.offers" :key="index" class="">
                 <div v-if="notification.data && notification.read_at">
                     <div class=" d-flex justify-content-between my-2 border p-2 text-dark">
@@ -284,7 +295,6 @@
                 </div>
             </div>
 
-            <!-- promotions -->
             <div v-for="(notification, index) in notifications.promotions" :key="index" class="">
                 <div v-if="notification.data && notification.read_at">
                     <div class=" d-flex justify-content-between my-2 border p-2 text-dark">
@@ -309,19 +319,20 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
+    <!-- <NoData  /> -->
 
-    <div class="container">
-
-        <img src="" alt="">
-    </div>
 
 </template>
 
 <script>
+// import NoData from '../../components/NoData.vue'; 
 export default {
     name: 'NotificationPage',
+    // components:{
+    //     NoData
+    // },
     props: ['user', 'notifications'],
     data() {
         return {
@@ -341,7 +352,7 @@ export default {
         },
         markAsReady(notification) {
             this.$store.dispatch('LoggedInUserStore/markAsRead', notification.sid)
-        }
+        },
     }
 }
 </script>

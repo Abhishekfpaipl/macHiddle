@@ -22,13 +22,17 @@
                 <div class="text-center position-relative">
                     <i class="bi bi-bell fs-4 mx-2" data-bs-toggle="offcanvas" data-bs-target="#notificationOffcanvas"
                         aria-controls="notificationOffcanvas" style="color: var(--primary-color);"></i>
-                    <span v-if="notifications.intimations" class="badge count"> <span style="margin-left: -3px;">{{
-                            unreadNotificationsCount }}</span></span>
+                    <span v-if="Object.keys(unreadNotificationsCount).length > 0"
+                        class="badge count"> <span style="margin-left: -3px;">{{ unreadNotificationsCount
+                            }}</span></span>
+
                 </div>
                 <div class="text-center position-relative">
                     <router-link to="/cart-page">
                         <i class="bi bi-cart fs-4 mx-2" style="color: var(--primary-color);"></i>
-                        <span v-if="cart.products" class="badge count">{{ cart.products.length }}</span>
+                        <span v-if="cart.products && Object.keys(cart.products).length > 0" class="badge count">{{
+                            cart.products.length }}</span>
+
                     </router-link>
                 </div>
             </div>
@@ -57,7 +61,8 @@
                     </router-link>
                 </div>
                 <router-link v-if="!user.name" to="/login-page"
-                    class="border-bottom py-3 d-flex text-start text-decoration-none">
+                    class="border-bottom py-3 d-flex text-start text-decoration-none"
+                    style="color: var(--primary-color);">
                     <i class="bi bi-arrow-right"></i>
                     <p class="m-0 ms-2">Login</p>
                 </router-link>
@@ -131,11 +136,11 @@ export default {
                     icon: 'bi bi-arrow-right ',
                     router: '/career'
                 },
-                {
-                    name: 'Category',
-                    icon: 'bi bi-arrow-right ',
-                    router: '/categories'
-                },
+                // {
+                //     name: 'Category',
+                //     icon: 'bi bi-arrow-right ',
+                //     router: '/categories'
+                // },
                 // {
                 //     name: 'Login',
                 //     icon: 'bi bi-arrow-right ',
@@ -148,7 +153,8 @@ export default {
     mounted() {
         this.$store.dispatch('LoggedInUserStore/fetchCart')
         this.$store.dispatch('LoggedInUserStore/fetchUserDetail')
-        this.$store.dispatch('LoggedInUserStore/fetchAllNotifications')
+        // this.$store.dispatch('LoggedInUserStore/fetchAllNotifications')
+        this.$store.dispatch('LoggedInUserStore/fetchIntimationNotifications')
     },
     computed: {
         cart() {
@@ -157,15 +163,19 @@ export default {
         user() {
             return this.$store.getters['LoggedInUserStore/getUserDetail']
         },
+        // notifications() {
+        //     return this.$store.getters['LoggedInUserStore/getAllNotifications']
+        // },
         notifications() {
-            return this.$store.getters['LoggedInUserStore/getAllNotifications']
+            return this.$store.getters['LoggedInUserStore/getIntimationNotification']
         },
         unreadNotificationsCount() {
-            const unreadIntimations = this.notifications.intimations.filter(notification => !notification.read_at).length;
-            const unreadOffers = this.notifications.offers.filter(notification => !notification.read_at).length;
-            const unreadPromotions = this.notifications.promotions.filter(notification => !notification.read_at).length;
+            const unreadIntimations = this.notifications.filter(notification => !notification.read_at).length;
+            // const unreadOffers = this.notifications.offers.filter(notification => !notification.read_at).length;
+            // const unreadPromotions = this.notifications.promotions.filter(notification => !notification.read_at).length;
 
-            return unreadIntimations + unreadOffers + unreadPromotions;
+            // return unreadIntimations + unreadOffers + unreadPromotions;
+            return unreadIntimations;
         }
 
     },

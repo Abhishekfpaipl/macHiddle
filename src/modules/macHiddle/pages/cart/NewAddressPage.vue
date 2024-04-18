@@ -1,5 +1,5 @@
 <template>
-    <div class="container pb-5 mb-5">
+    <div class="container py-3 my-5">
         <div class="card card-body my-2">
             <form @submit.prevent="saveAddress()">
                 <div class="d-flex mb-4">
@@ -56,11 +56,12 @@
                         style="border: none;border-bottom: 1px solid;border-radius: 0px;box-shadow: none;" />
                     <label for="countryInput">Country</label>
                 </div>
-                <div class="form-floating mb-3">
+                <!-- <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="locationInput" v-model="nearby"
                         style="border: none;border-bottom: 1px solid;border-radius: 0px;box-shadow: none;" />
                     <label for="locationInput">Nearby Location (optional)</label>
-                </div>
+                </div> -->
+                
                 <!-- <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="defaultAddress" v-model="formData.is_primary">
                     <label class="form-check-label" for="defaultAddress">
@@ -92,7 +93,7 @@ export default {
                 state: '',
                 country: '',
                 pincode: '',
-                nearby: '',
+                // nearby: '',
             },
         }
     },
@@ -114,16 +115,20 @@ export default {
             this.$store.dispatch('LoggedInUserStore/createAddress', data)
                 .then(() => {
                     this.formData.fname = '',
-                        this.formData.lname = '',
-                        this.formData.contact = '',
-                        this.formData.line1 = '',
-                        this.formData.line2 = '',
-                        this.formData.district = '',
-                        this.formData.state = '',
-                        this.formData.country = '',
-                        this.formData.pincode = ''
-            });
-
+                    this.formData.lname = '',
+                    this.formData.contact = '',
+                    this.formData.line1 = '',
+                    this.formData.line2 = '',
+                    this.formData.district = '',
+                    this.formData.state = '',
+                    this.formData.country = '',
+                    this.formData.pincode = ''
+                    
+                });
+                // this.goBack()
+        },
+        goBack(){
+            window.history.back()
         }
     }
 

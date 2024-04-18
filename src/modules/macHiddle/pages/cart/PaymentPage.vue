@@ -1,5 +1,5 @@
 <template>
-    <div class="container py-5">
+    <div class="container py-5 mt-3">
         <CartTopNav />
         <CartStepper />
         <div class="row">

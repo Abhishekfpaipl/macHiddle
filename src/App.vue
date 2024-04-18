@@ -1,6 +1,6 @@
 <template>
   <TopNav v-if="!hide" />
-  <transition name="fade" mode="out-in">
+  <transition name="fade">
     <router-view />
   </transition>
   <bottom-nav v-if="!hidden" />

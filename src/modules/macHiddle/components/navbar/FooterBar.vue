@@ -34,7 +34,7 @@
             </div>
             <div class="d-block d-lg-flex align-items-center flex-column mb-3">
                 <i class="bi bi-envelope fs-1"></i>
-                <p>Subscribe To Our Newsletter</p>
+                <p>Subscribe To Know Offers & Promotions</p>
                 <div class="input-group mb-3">
                     <input type="email" class="form-control" placeholder="email" aria-label="Recipient's username"
                         aria-describedby="basic-addon2">

@@ -35,9 +35,10 @@
                         <option value="priceHighToLow" selected>Select sorting options</option>
                         <option value="priceHighToLow">Price High to Low</option>
                         <option value="priceLowToHigh">Price Low to High</option>
-                        <option value="stockAvailability">Stock Availability</option>
-                        <option value="rating">Popularity</option>
-                        <option value="reviews">Newest</option>
+                        <option value="stockHighToLow">Stock High to Low</option>
+                        <option value="stockLowToHigh">Stock Low to High</option>
+                        <!-- <option value="rating">Rating</option>
+                        <option value="reviews">Reviews</option> -->
                     </select>
                 </div>
             </div>
@@ -158,15 +159,20 @@ export default {
             } else if (this.selectedSort === 'priceLowToHigh') {
                 orderBy = 'price';
                 direction = 'asc';
+            } else if (this.selectedSort === 'stockLowToHigh') {
+                orderBy = 'stock';
+                direction = 'asc';
+            } else if (this.selectedSort === 'stockHighToLow') {
+                orderBy = 'stock';
+                direction = 'desc';
             }
             const data = {
-                collectionId: this.collectionId,
+                categoryId: this.categoryId,
                 page: this.page
             }
             console.log('Sort by:', orderBy, direction);
             this.$store.dispatch('MacStore/applyCollectionSort', { orderBy, direction, data })
         }
-
     },
     watch: {
         selectedSort() {

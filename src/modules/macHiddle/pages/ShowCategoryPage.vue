@@ -22,8 +22,9 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <AllFilters id="filterMobile" :filter="categoryFilter" :categoryId="categoryId" :page="page"
-                            @category-filters="filtersChanged" />
+                        {{ categoryFilter.extraData }}
+                        <AllFilters id="filterMobile" :filter="categoryFilter" :categoryFilter="lastLevelCategory"
+                            :categoryId="categoryId" :page="page" @category-filters="filtersChanged" />
                     </div>
                     <div class="offcanvas-footer btn-group">
                         <button class="btn btn-warning rounded-0">Close</button>
@@ -35,18 +36,18 @@
                         <option value="priceHighToLow" selected>Select sorting options</option>
                         <option value="priceHighToLow">Price High to Low</option>
                         <option value="priceLowToHigh">Price Low to High</option>
-                        <option value="stockAvailability">Stock Availability</option>
-                        <option value="rating">Rating</option>
-                        <option value="reviews">Reviews</option>
+                        <option value="stockHighToLow">Stock High to Low</option>
+                        <option value="stockLowToHigh">Stock Low to High</option>
+                        <!-- <option value="rating">Rating</option>
+                        <option value="reviews">Reviews</option> -->
                     </select>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-2 border border-1 d-none d-md-block">
-
-                    <AllFilters :filter="categoryFilter" :categoryId="categoryId" :page="page" id="filterDesktop"
-                        @category-filters="filtersChanged" />
+                    <AllFilters :filter="categoryFilter" :categoryFilter="lastLevelCategory" :categoryId="categoryId"
+                        :page="page" id="filterDesktop" @category-filters="filtersChanged" />
                 </div>
                 <div class="col-md-10 col-12">
                     <ProductCard :products="category" :quickAdd="true" :options="true" :similar="true" />
@@ -65,7 +66,7 @@ import ProductCard from '@/modules/macHiddle/components/ProductCard.vue';
 import AllFilters from '@/modules/macHiddle/components/filters/AllFilters.vue';
 import NoData from '@/modules/macHiddle/components/NoData.vue';
 export default {
-    name: 'SubCategoryPage',
+    name: 'ShowCategoryPage',
     components: {
         ProductCard,
         AllFilters,
@@ -95,13 +96,17 @@ export default {
         },
         categoryFilter() {
             return this.$store.getters['MacStore/getShowCategoryFilter']
-        }
+        },
+        lastLevelCategory() {
+            return this.$store.getters['MacStore/getLastLevelCategory']
+        },
+
     },
     mounted() {
 
         this.categoryId = this.$route.params.categoryId;
         this.fetchShowCategory(this.categoryId, this.page);
-
+        this.$store.dispatch('MacStore/fetchLastLevelCategory')
         window.addEventListener('scroll', this.handleScroll);
         // this.$store.dispatch('LoggedInUserStore/fetchWishlist')
         // .then(() => {
@@ -149,6 +154,7 @@ export default {
                 colors: this.filters.options,
                 sizes: this.filters.ranges,
                 attributes: this.filters.attributes,
+                category: this.filters.category,
                 categoryId: this.categoryId,
                 page: this.page
 
@@ -170,6 +176,12 @@ export default {
             } else if (this.selectedSort === 'priceLowToHigh') {
                 orderBy = 'price';
                 direction = 'asc';
+            } else if (this.selectedSort === 'stockLowToHigh') {
+                orderBy = 'stock';
+                direction = 'asc';
+            } else if (this.selectedSort === 'stockHighToLow') {
+                orderBy = 'stock';
+                direction = 'desc';
             }
             const data = {
                 categoryId: this.categoryId,

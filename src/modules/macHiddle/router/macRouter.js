@@ -16,8 +16,8 @@ export default [
             {
                 path: ':categoryId',
                 // path: 'sub-category',
-                name: 'SubCategoryPage',
-                component: () => import('@/modules/macHiddle/pages/SubCategoryPage.vue')
+                name: 'ShowCategoryPage',
+                component: () => import('@/modules/macHiddle/pages/ShowCategoryPage.vue')
             },
         ]
     },
@@ -193,7 +193,7 @@ export default [
     {
         path: '/sub-category/:categorySlug',
         name: 'SubCategory',
-        component: () => import('@/modules/macHiddle/pages/SubCategoryPage.vue')
+        component: () => import('@/modules/macHiddle/pages/ShowCategoryPage.vue')
     },
     {
         path: '/search-page',

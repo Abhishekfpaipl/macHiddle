@@ -8,12 +8,17 @@
                         class="text-decoration-none text-dark">
                         <div :id="'youMakeLike' + index" class="carousel slide">
                             <div class="carousel-inner">
-                                <div :id="'cardCarousel' + imgIndex" class="carousel-item"
+                                <div :id="'cardCarousel' + imgIndex" class="carousel-item position-relative"
                                     :class="{ active: imgIndex === 0 }" v-for="(image, imgIndex) in product.options"
                                     :key="imgIndex">
                                     <img :src="image.primary_image" class="card-img-top rounded-0" alt=""
-                                        style="min-height:100px;">
+                                        style="min-height:100px;"
+                                        :style="{ filter: product.stock === 0 ? 'blur(1px)' : 'none' }">
+
                                 </div>
+                                <span v-if="product.stock === 0"
+                                    class="position-absolute bg-light rounded-pill top-50 p-1 fw-bold text-danger"
+                                    style="right:30%">Sold Out</span>
                             </div>
                             <div class="d-flex mt-1 px-1" id="scroll" style="overflow-x: scroll;">
                                 <button type="button" class="rounded p-0 border me-1"
@@ -21,11 +26,12 @@
                                     :class="{ active: imgIndex === 0 }" :aria-current="imgIndex === 0 ? true : false"
                                     v-for="(image, imgIndex) in product.options" :key="imgIndex">
                                     <img :src="image.primary_image" class="rounded" alt=""
-                                        style="width: 35px; height: 35px; object-fit: fill;">
+                                        style="width: 35px; height: 35px; object-fit: fill;" :style="{ filter: product.stock === 0 ? 'blur(1px)' : 'none' }">
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body mt-1 px-1" style="padding:3px;font-size:13px;">
+                        <div class="card-body mt-1 px-1" :class="{ 'text-muted': product.stock === 0 }"
+                            style="padding:3px;font-size:13px;">
                             <p class="m-0 fw-bold text-truncate">{{ product.name }}</p>
 
                             <div class="d-flex justify-content-between mt-1 ms-1 pb-1">
@@ -44,28 +50,10 @@
                             </div>
                             <div class="wh-40 bg-light rounded-circle px-1">
                                 <i class="bi bi-bookmarks" data-bs-toggle="offcanvas" data-bs-target="#similarProducts"
-                                    aria-controls="similarProducts"></i>
+                                    :data-bs-productsid="product.category.sid" aria-controls="similarProducts"></i>
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="btn-group w-100 rounded-0 overflow-hidden">
-                        <button class="w-50 btn btn-dark rounded-0" data-bs-toggle="modal"
-                            data-bs-target="#quickAddModal" :data-bs-productid="product.id" @mouseover="startPulse"
-                            @mouseleave="stopPulse" :class="{ 'pulse-animation': isPulsing }">
-                            <i class="bi bi-plus-square"></i> <span>Quick Add</span>
-                        </button>
-                    </div> -->
-
-                    <!-- <div class="btn bg-light border-top  rounded-0 p-0" data-bs-toggle="modal"
-                        data-bs-target="#quickAddModal" :data-bs-productsid="product.sid">
-                        <input type="checkbox" class="btn-check" name="cart" :id="'cart' + product.sid"
-                            autocomplete="off">
-                        <label :for="'cart' + product.sid" style="padding:0px  !important">
-                            <i class="bi bi-cart-plus fs-5"></i> <span>Quick Add</span>
-                        </label>
-                    </div> -->
-
                     <SimilarProductsOffcanvas :products="getAllProducts" />
                     <QuickAdd :product="getAllProducts" />
                 </div>
@@ -100,7 +88,6 @@
 import SimilarProductsOffcanvas from '@/modules/macHiddle/components/SimilarProductsOffcanvas.vue';
 import QuickAdd from '@/modules/macHiddle/components/QuickAdd.vue';
 import sweetAlert from "@/modules/macHiddle/mixins/sweet-alert";
-// import { mapActions, mapGetters } from 'vuex';
 // import ProductCard from '@/modules/macHiddle/components/ProductCard.vue';
 export default {
     name: "YouMayLike",
@@ -120,6 +107,9 @@ export default {
         }
     },
     computed: {
+        isSoldOut() {
+            return this.product.stock === 0;
+        },
         products() {
             return this.$store.getters['MacStore/getProducts']
         },
@@ -132,24 +122,16 @@ export default {
         wishlist() {
             return this.$store.getters['LoggedInUserStore/getWishlist']
         }
-        // ...mapGetters('MacStore', ['getAllProducts']),
     },
     mounted() {
         this.fetchProducts(this.page);
         this.$store.dispatch('LoggedInUserStore/fetchWishlist')
-        // .then(() => {
-        //     // Check wishlist status for each product in getAllProducts
-        //     this.getAllProducts.forEach(product => {
-        //         product.isInWishlist = this.isInWishlist(product);
-        //     });
-        // });
         window.addEventListener('scroll', this.handleScroll);
     },
     beforeUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
-        // ...mapActions('MacStore', ['fetchProducts']),
         fetchProducts() {
             this.$store.dispatch('MacStore/fetchProducts', this.page)
         },
@@ -173,24 +155,12 @@ export default {
             }
             this.previousScrollTop = scrollTop;
         },
-        // addToWishlist(product) {
-        //     const data = {
-        //         product_sid: product.sid
-        //     }
-        //     this.$store.dispatch('LoggedInUserStore/addToWishlist', data)
-        //     this.$store.dispatch('LoggedInUserStore/removeFromWishlist', data)
-        // },
         addToWishlist(product) {
             const data = {
                 product_sid: product.sid
             }
-            // if (this.isInWishlist(product)) {
-            //     console.log('remove check', product.sid)
-            //     this.$store.dispatch('LoggedInUserStore/removeFromWishlist', product.sid)
-            // } 
-            // else {
+
             this.$store.dispatch('LoggedInUserStore/addToWishlist', data)
-            // }
         },
         isInWishlist(product) {
             return this.wishlist.some(item => item.product.sid === product.sid);
@@ -210,3 +180,21 @@ export default {
     }
 }
 </script>
+<style>
+.sold-out {
+    position: relative;
+}
+
+.sold-out::after {
+    content: "Sold Out";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    color: red;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+}
+</style>

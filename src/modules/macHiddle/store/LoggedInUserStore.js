@@ -18,6 +18,8 @@ export default {
         filteredOrders: [],
         // showLogoutButton: false,
         allNotifications: [],
+        showAtcButton: false,
+        intimationNotification: [],
     },
     getters: {
         getCart: state => state.cart,
@@ -32,14 +34,16 @@ export default {
         getUserDetail: state => state.userDetail,
         // showLogoutButton: state => state.showLogoutButton
         getAllNotifications: state => state.allNotifications,
+        getShowAtcButton: state => state.showAtcButton,
+        getIntimationNotification: state => state.intimationNotification
     },
     mutations: {
         actionDone(state) {
             state.action = true
         },
-        // showLogoutBtn(state) {
-        //     state.showLogoutButton = !state.showLogoutButton
-        // },
+        showAtcButton(state) {
+            state.showAtcButton = true
+        },
         setCart(state, data) {
             state.cart = data
         },
@@ -73,7 +77,9 @@ export default {
         setAllNotification(state, data) {
             state.allNotifications = data
         },
-
+        setIntimationNotifications(state, data) {
+            state.intimationNotification = data
+        }
     },
     actions: {
         loginUser({ commit }, data) {
@@ -96,7 +102,7 @@ export default {
                     if (response.data.status === 200) {
                         commit('actionDone', response)
                         sweetAlert.showSweetAlert('Yay!', 'Your email has been verified successfully')
-                        router.push('/')
+                        router.push('/my-address')
                     } else if (response.data.status === 422) {
                         sweetAlert.showSweetError('', response.data.message)
                     } else {
@@ -154,7 +160,7 @@ export default {
                     console.error(error);
                 })
         },
-        markAsRead({ commit , dispatch}, data) {
+        markAsRead({ commit, dispatch }, data) {
             axiosInstance.put(`notifications/${data}`, {}, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     if (response.data.status === 'ok') {
@@ -246,36 +252,49 @@ export default {
                     console.log(error);
                 })
         },
-        addToCart({ dispatch }, data) {
-            axiosInstance.post('carts', data, { headers: { "Authorization": `Bearer ${token}` } })
-                .then((response) => {
-                    if (response.data.status === 'ok') {
-                        dispatch('fetchCart');
-                        sweetAlert.showSweetAlert('Yay!', 'Product Added to Cart')
-                        console.log(response)
-                    } else if (response.data.status === 'error') {
-                        alert(response.data.message);
-                        sweetAlert.showSweetError('Oops!', 'Something went wrong')
-                    } else {
-                        alert('Something went wrong! Please try again');
-                    }
+        addToCart({ commit, dispatch }, data) {
+            // const data = {
+            //     product_sid: localStorage.getItem('product_sid'),
+            //     option_sid: localStorage.getItem('option_sid'),
+            //     range_sid: localStorage.getItem('range_sid'),
+            //     quantity: localStorage.getItem('quantity'),
+            // }
+            // console.log('atc', data)
+            if (data.option_sid && data.product_sid && data.quantity && data.range_sid) {
+                axiosInstance.post('carts', data, { headers: { "Authorization": `Bearer ${token}` } })
+                    .then((response) => {
+                        if (response.data.status === 'ok') {
+                            commit('showAtcButton')
+                            dispatch('fetchCart');
+                            sweetAlert.showSweetAlert('Yay!', 'Product Added to Cart')
+                            console.log(response)
+                        } else if (response.data.status === 'error') {
+                            alert(response.data.message);
+                            sweetAlert.showSweetError('Oops!', 'Something went wrong')
+                        } else {
+                            alert('Something went wrong! Please try again');
+                        }
 
-                })
-                .catch(error => {
-                    if (error.response && error.response.status === 401) {
-                        // Redirect the user to the login page
-                        router.push('/login-page');
-                    } else {
-                        console.error('Error:', error);
-                        sweetAlert.showSweetError('Oops!', 'Something went wrong')
-                    }
-                });
+                    })
+                    .catch(error => {
+                        if (error.response && error.response.status === 401) {
+                            router.push('/login-page');
+                        } else {
+                            console.error('Error:', error);
+                            sweetAlert.showSweetError('Oops!', 'Something went wrong')
+                        }
+                    });
+            } else {
+                sweetAlert.showSweetError('Oh!', 'Please select color & size')
+            }
         },
         removeCartProduct({ dispatch }, data) {
             console.log('store', data)
             axiosInstance.put(`carts/${data.cartId}`, data, { headers: { "Authorization": `Bearer ${token}` } })
                 .then(() => {
                     dispatch('fetchCart')
+                }).catch(error => {
+                    console.log(error);
                 })
         },
         removeFromCartSaveToWishlist({ dispatch }, data) {
@@ -325,19 +344,28 @@ export default {
                     }
                 })
         },
-        proceedToCheckout({ commit }, data) {
+        proceedToCheckout({ dispatch }, data) {
             axiosInstance.post('checkout', data, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
-                    commit('actionDone', response)
+                    if (response.data.status === 'ok') {
+                        dispatch('fetchCart')
+                    } else if (response.data.error === 'error') {
+                        alert(response.data.message)
+                    } else {
+                        alert('Something went wrong! Please try again');
+                    }
+                }).catch(error => {
+                    console.log(error);
                 })
         },
 
-        fetchAddresses({ commit }) {
+        fetchAddresses({ commit, dispatch }) {
             axiosInstance.get('addresses', { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     if (response.status === 200) {
                         // if (response.status === 'ok') {
                         commit('setAddresses', response.data.data)
+                        dispatch('fetchCheckout')
                         // } else if (response.data.status === 'error') {
                         //     alert(response.data.message);
                         // } else {
@@ -367,7 +395,9 @@ export default {
             axiosInstance.post('addresses', data, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     commit('actionDone', response)
-                    sweetAlert.showSweetAlert('Yay!', 'You have added a new address')
+                    sweetAlert.showSweetAlert('Yay!', 'You have added a new address');
+                    // router.push('/my-address')
+                    router.go(-1);
                 }).catch((error) => {
                     console.log(error)
                     sweetAlert.showSweetError('', error.response.data.message)
@@ -386,10 +416,11 @@ export default {
                     dispatch('fetchAddresses')
                 })
         },
-        setDefaultAddress({ commit }, data) {
+        setDefaultAddress({ commit, dispatch }, data) {
             axiosInstance.put(`make_default/${data.addressId}`, {}, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     commit('actionDone', response)
+                    dispatch('fetchAddresses')
                 })
         },
         // fetchOrders({ commit }) {
@@ -412,7 +443,7 @@ export default {
         //         })
         // },
         cancelOrder({ commit }, data) {
-            axiosInstance.put(`orderproducts/${data.order_sid}`, { status: 'cancelled', reason: data.reason }, { headers: { "Authorization": `Bearer ${token}` } })
+            axiosInstance.put(`orderproducts/${data.order_sid}`, { status: data.status, reason: data.reason }, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     commit('actionDone', response)
                 })
@@ -450,7 +481,7 @@ export default {
         //         })
         // },
 
-        fetchFilteredOrderProducts({ commit }, data) {
+        fetchCancelledOrderProducts({ commit }, data) {
             axiosInstance.get('orders/' + data.filter, { headers: { "Authorization": `Bearer ${token}` } })
                 .then((response) => {
                     commit('setFilteredOrders', response.data.data.order_products)
@@ -558,6 +589,21 @@ export default {
                 .catch((error) => {
                     console.log(error)
                     // sweetAlert.showSweetError('', error.response.data.message)
+                })
+        },
+        fetchIntimationNotifications({ commit }) {
+            axiosInstance.get('intimations/notifications', { headers: { "Authorization": `Bearer ${token}` } })
+                .then((response) => {
+                    if (response.data.status === 'ok') {
+                        commit('setIntimationNotifications', response.data.data)
+                    } else if (response.data.error === 'error') {
+                        alert(response.data.message)
+                    } else {
+                        console.log('', response.data.error)
+                        alert('Somthing went wrong while fetching fetchIntimationNotifications')
+                    }
+                }).catch((error) => {
+                    console.log(error)
                 })
         }
     }

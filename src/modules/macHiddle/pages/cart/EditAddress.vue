@@ -51,11 +51,12 @@
                         style="border: none;border-bottom: 1px solid;border-radius: 0px;box-shadow: none;" />
                     <label for="stateInput">State</label>
                 </div>
-                <div class="form-floating mb-3">
+                <!-- <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="locationInput" v-model="nearby"
                         style="border: none;border-bottom: 1px solid;border-radius: 0px;box-shadow: none;" />
                     <label for="locationInput">Nearby Location (optional)</label>
-                </div>
+                </div> -->
+
                 <!-- <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="defaultAddress" v-model="formData.is_primary">
                     <label class="form-check-label" for="defaultAddress">
@@ -87,8 +88,7 @@ export default {
                 state: '',
                 country: '',
                 pincode: '',
-                nearby: '',
-                is_primary: false,
+                // nearby: '', 
             },
             addressId: null,
         }
@@ -113,7 +113,7 @@ export default {
                         state: '',
                         country: '',
                         pincode: '',
-                        nearby: '',
+                        // nearby: '',
                     };
                 }
             },
@@ -127,18 +127,6 @@ export default {
     },
     methods: {
         saveAddress() {
-            // if (
-            //     !this.firstName ||
-            //     !this.lastName ||
-            //     !this.contactNo ||
-            //     !this.line1 ||
-            //     !this.line2 ||
-            //     !this.district ||
-            //     !this.state ||
-            //     !this.pincode
-            // ) {
-            //     return;
-            // }
             const data = {
                 fname: this.formData.fname,
                 lname: this.formData.lname,
@@ -152,7 +140,6 @@ export default {
                 address_sid: this.showAddress.sid
             };
             if (this.showAddress) {
-                // Update existing address
                 console.log(data)
                 this.$store.dispatch('LoggedInUserStore/updateAddress', data);
             }

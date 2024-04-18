@@ -212,6 +212,8 @@ export default {
         showCollectionFilter: {},
         searchFilters: [],
         check: {},
+        similarProducts: [],
+        lastLevelCategory: [],
     },
     getters: {
         getProducts: state => state.products,
@@ -232,6 +234,8 @@ export default {
         getShowCollectionFilter: state => state.showCollectionFilter,
         getSearchFilters: state => state.searchFilters,
         getCheck: state => state.check,
+        getSimilarProducts: state => state.similarProducts,
+        getLastLevelCategory: state => state.lastLevelCategory,
     },
     mutations: {
         setBanners(state, data) {
@@ -275,11 +279,11 @@ export default {
             state.categories = data
         },
         setShowCategory(state, data) {
-            state.showCategory = [...state.showCategory, ...data]
+            state.showCategory = data
         },
-        setFilteredCategory(state, data) {
-            state.showCategory = [...state.showCategory, ...data]
-        },
+        // setFilteredCategory(state, data) {
+        //     state.showCategory = data
+        // },
         setShowCategoryFilter(state, data) {
             state.showCategoryFilter = { ...state.showCategoryFilter, ...data };
         },
@@ -294,16 +298,22 @@ export default {
             state.action = true;
         },
         searchProducts(state, data) {
-            state.searchProducts = [...state.searchProducts, ...data]
+            state.searchProducts = data
         },
         setSearchFilters(state, data) {
-            state.searchFilters = { ...state.searchFilters, ...data }
+            state.searchFilters = data
         },
         setFilteredSearch(state, data) {
-            state.searchFilters = { ...state.searchFilters, ...data }
+            state.searchFilters = data
         },
         setCheck(state, data) {
             state.check = { ...state.check, ...data }
+        },
+        setSimilarProducts(state, data) {
+            state.similarProducts = data
+        },
+        setLastLevelCategory(state, data) {
+            state.lastLevelCategory = data
         }
     },
     actions: {
@@ -316,7 +326,7 @@ export default {
                     const token = response.data.token;
                     localStorage.setItem('token', token);
                     console.log('Registered successfully. Token stored:', token);
-                    router.push('/')
+                    router.push('/email-verification-page')
                 }).catch((error) => {
                     console.log('error', error)
                     sweetAlert.showSweetError('', error.response.data.message)
@@ -445,14 +455,13 @@ export default {
         fetchCategories({ commit }) {
             axiosInstance.get('categories')
                 .then((response) => {
-                    // if (response.status === 'ok') {
-                    commit('setCategories', response.data.data)
-                    // } else if (response.data.status === 'error') {
-                    //     alert(response.data.message);
-                    // } else {
-                    //     alert('Something went wrong! Please try again');
-                    // }
-
+                    if (response.data.status === 'ok') {
+                        commit('setCategories', response.data.data)
+                    } else if (response.data.status === 'error') {
+                        alert(response.data.message);
+                    } else {
+                        alert('Something went wrong! Please try again');
+                    }
                 })
                 .catch((error) => {
                     console.error('fetchCategories:', error);
@@ -494,10 +503,11 @@ export default {
                 });
         },
         applyFilters({ commit }, data) {
-            axiosInstance.get('categories/' + data.categoryId + '?page=' + data.page + '&options=' + data.colors + '&ranges=' + data.sizes + '&attributes=' + data.attributes)
+            axiosInstance.get('categories/' + data.categoryId + '?page=' + data.page + '&options=' + data.colors + '&ranges=' + data.sizes + '&attributes=' + data.attributes + '&categories=' + data.category)
                 .then((response) => {
                     if (response.data.status === 'ok') {
-                        commit('setFilteredCategory', response.data.data.data)
+                        // commit('setFilteredCategory', response.data.data.data)
+                        commit('setShowCategory', response.data.data.data)
                     } else if (response.data.status === 'error') {
                         alert(response.data.message);
                     } else {
@@ -663,5 +673,37 @@ export default {
                     // Show error message in UI or log to console
                 });
         },
+        fetchSimilarProducts({ commit }, data) {
+            axiosInstance.get('categories/similarproducts/' + data)
+                .then((response) => {
+                    if (response.data.status === 'ok') {
+                        commit('setSimilarProducts', response.data.data)
+                    } else if (response.data.status === 'error') {
+                        alert(response.data.message);
+                    } else {
+                        console.error('Unexpected response status:', response.data.status);
+                        alert('Unexpected response from the server! Please try again later.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Something went wrong! Please try again fetchSimilarProducts');
+                });
+        },
+        fetchLastLevelCategory({ commit }) {
+            axiosInstance.get('categories/lastlevel/categories')
+                .then((response) => {
+                    if (response.data.status === 'ok') {
+                        commit('setLastLevelCategory', response.data.data)
+                    } else if (response.data.status === 'errror') {
+                        alert(response.data.message)
+                    } else {
+                        console.error('Unexpected response from lastLevelCategory', response.data.status);
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('Something went wrong! Please try again fetchLastLevelCategory');
+                })
+        }
     }
 }

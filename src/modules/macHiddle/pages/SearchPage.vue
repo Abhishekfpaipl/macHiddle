@@ -4,8 +4,8 @@
             <router-link to="/" class="text-dark">
                 <i class="bi bi-arrow-left-short fs-3"></i>
             </router-link>
-            <input type="search" placeholder="Search for Products?" v-model="searchTerm"
-                class="form-control border-0" ref="searchInput" @keyup.enter="search">
+            <input type="search" placeholder="Search for Products?" v-model="searchTerm" class="form-control border-0"
+                ref="searchInput" @keyup.enter="search">
             <!-- <div class="">
                 <span class="bi bi-mic-fill"></span>
             </div> -->
@@ -29,7 +29,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <AllFilters id="searchfilterMobile" :filter="searchFilters"
+                        <AllFilters id="searchfilterMobile" :filter="searchFilters" :categoryFilter="lastLevelCategory"
                             @category-filters="filtersChanged" />
                     </div>
                     <div class="offcanvas-footer btn-group">
@@ -39,22 +39,24 @@
                 </div>
                 <div class="">
                     <select class="form-select" id="sortSelect" v-model="selectedSort" @change="applySort()">
-                        <option default selected>Select sorting options</option>
+                        <option value="priceHighToLow" selected>Select sorting options</option>
                         <option value="priceHighToLow">Price High to Low</option>
                         <option value="priceLowToHigh">Price Low to High</option>
-                        <option value="stockAvailability">Stock Availability</option>
-                        <option value="rating">Popularity</option>
-                        <option value="reviews">Newest</option>
+                        <option value="stockHighToLow">Stock High to Low</option>
+                        <option value="stockLowToHigh">Stock Low to High</option>
+                        <!-- <option value="rating">Rating</option>
+                        <option value="reviews">Reviews</option> -->
                     </select>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-2 border border-1 d-none d-md-block">
-                    <AllFilters :filter="searchFilters" id="searchfilterDesktop" @category-filters="filtersChanged" />
+                    <AllFilters :filter="searchFilters" :categoryFilter="lastLevelCategory" id="searchfilterDesktop"
+                        @category-filters="filtersChanged" />
                 </div>
                 <div class="col-md-10 col-12">
-                    <ProductCard :products="products" :quickAdd="true" :options="true" :similar="true" />
+                    <ProductCard :products="products" :options="true" />
                 </div>
             </div>
 
@@ -78,13 +80,14 @@ export default {
             page: 1,
             isFetching: false,
             previousScrollTop: 0,
-            selectedSort: '',
+            selectedSort: 'Select sorting options',
             filters: []
         };
     },
     mounted() {
         this.$refs.searchInput.focus();
         window.addEventListener('scroll', this.handleScroll);
+        this.$store.dispatch('MacStore/fetchLastLevelCategory')
     },
     unmounted() {
         window.removeEventListener('scroll', this.handleScroll);
@@ -95,7 +98,10 @@ export default {
         },
         searchFilters() {
             return this.$store.getters['MacStore/getSearchFilters']
-        }
+        },
+        lastLevelCategory() {
+            return this.$store.getters['MacStore/getLastLevelCategory']
+        },
     },
     methods: {
         handleScroll() {
@@ -137,6 +143,7 @@ export default {
                 colors: this.filters.options,
                 sizes: this.filters.ranges,
                 attributes: this.filters.attributes,
+                category: this.filters.category,
                 page: this.page,
                 search: this.searchTerm
 
@@ -144,6 +151,7 @@ export default {
             console.log('filters', data)
             this.$store.dispatch('MacStore/applySearchFilters', data)
         },
+
         applySort() {
             let orderBy, direction;
             if (this.selectedSort === 'priceHighToLow') {
@@ -152,12 +160,17 @@ export default {
             } else if (this.selectedSort === 'priceLowToHigh') {
                 orderBy = 'price';
                 direction = 'asc';
+            } else if (this.selectedSort === 'stockLowToHigh') {
+                orderBy = 'stock';
+                direction = 'asc';
+            } else if (this.selectedSort === 'stockHighToLow') {
+                orderBy = 'stock';
+                direction = 'desc';
             }
             const data = {
-                search: this.searchTerm,
+                categoryId: this.categoryId,
                 page: this.page
             }
-
             console.log('Sort by:', orderBy, direction);
             this.$store.dispatch('MacStore/applySearchSort', { orderBy, direction, data })
         }

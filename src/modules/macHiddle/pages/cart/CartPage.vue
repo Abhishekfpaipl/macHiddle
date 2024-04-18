@@ -2,26 +2,20 @@
     <CartTopNav />
     <div class="container py-3 mt-5">
         <CartStepper />
-        <div v-if="cartProducts && cartProducts.products && cartProducts.products.length === 0"
-            class="bg-light w-100 d-flex flex-column justify-content-center align-items-center my-1"
-            style="height: 50%; padding: 90px 0px;">
-            <i class="bi bi-cart fs-1"></i>
-            <h3>Your cart is empty.</h3>
-            <router-link to="/" class="text-decoration-none text-dark mt-3">
-                <button class="btn btn-warning">Stat Shopping</button>
-            </router-link>
-        </div>
-        <div v-else class="row mt-3">
-            <div class="col-12 col-md-8 ">
-                <div class="alert alert-danger p-2 mt-2" v-if="reqAmt > cartProducts.total">
-                    You're just ₹{{ reqAmt - cartProducts.total }} away from unlocking free delivery!
-                    Shipping charges on the below order are ₹99.
-                </div>
 
-                <div v-else class="alert alert-success p-2 mt-2">
-                    Congratulations! You have successfully unlocked free delivery on this order.
-                    Shipping is free for this order!
-                </div>
+        <div v-if="Object.keys(cartProducts.products).length > 0" class="row mt-3">
+            <div class="col-12 col-md-8 ">
+                <!-- <div v-if="Object.keys(cartProducts.products ).length > 0" class="">
+                    <div class="alert alert-danger p-2 mt-2" v-if="reqAmt > cartProducts.total">
+                        You're just ₹{{ reqAmt - cartProducts.total }} away from unlocking free delivery!
+                        Shipping charges on the below order are ₹99.
+                    </div>
+
+                    <div v-else class="alert alert-success p-2 mt-2">
+                        Congratulations! You have successfully unlocked free delivery on this order.
+                        Shipping is free for this order!
+                    </div>
+                </div> -->
                 <div v-for="(cart, index) in cartProducts.products" :key="index" class="border">
                     <div class="d-flex p-2">
                         <img class="rounded" v-if="cart.option" :src="cart.option.primary_image"
@@ -40,13 +34,6 @@
                                     </div>
                                     <div class="form-group w-100 d-flex align-items-center">
                                         <label for="quantitySelect">Qty:</label>
-                                        <!-- <select v-model="cart.quantity" class="form-control-sm ms-2" id="quantitySelect"
-                                            @change="updateQuantity(cart)">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                        </select> -->
                                         <select v-model="cart.quantity" class="form-control-sm ms-2" id="quantitySelect"
                                             @change="updateQuantity(cart)">
                                             <option v-for="quantity in getQuantityOptions(cart)" :key="quantity"
@@ -103,7 +90,7 @@
                         <span class="fw-bold">Grand Total:</span>
                         <span>₹ {{ cartProducts.total }}</span>
                     </div>
-                    <router-link to="/my-address" v-if="Object.keys(address).length === 0"
+                    <router-link to="/new-address" v-if="Object.keys(address).length === 0"
                         class="btn btn-danger rounded-0 d-flex align-items-center justify-content-center">Add Address
                     </router-link>
                     <router-link to="/payment-page" v-else
@@ -167,6 +154,14 @@
             </div>
 
         </div>
+        <div v-else class="bg-light w-100 d-flex flex-column justify-content-center align-items-center my-1"
+            style="height: 50%; padding: 90px 0px;">
+            <i class="bi bi-cart fs-1"></i>
+            <h3>Your cart is empty.</h3>
+            <router-link to="/" class="text-decoration-none text-dark mt-3">
+                <button class="btn btn-warning">Stat Shopping</button>
+            </router-link>
+        </div>
     </div>
     <div v-if="cartProducts && cartProducts.products && cartProducts.products.length > 0"
         class="btn-group rounded-0 d-md-none w-100 position-fixed"
@@ -178,13 +173,14 @@
                 <small>View Detials</small> <i class="ps-1 bi bi-caret-up-fill"></i>
             </div>
         </div>
-        <router-link to="/my-address" v-if="Object.keys(address).length === 0"
+        <router-link to="/new-address" v-if="Object.keys(address).length === 0"
             class="btn btn-danger rounded-0 d-flex align-items-center justify-content-center">Add Address
         </router-link>
         <router-link to="/payment-page" v-else
             class="btn btn-danger rounded-0 d-flex align-items-center justify-content-center">Checkout
         </router-link>
     </div>
+
 </template>
 
 <script>
@@ -200,7 +196,7 @@ export default {
         PriceDetails,
         CartStepper,
         YouMayLike,
-        CartTopNav
+        CartTopNav,
     },
     data() {
         return {
@@ -218,10 +214,10 @@ export default {
     },
     mounted() {
         this.$store.dispatch('LoggedInUserStore/fetchCart')
-            // .then((response) => {
-            //     console.log('length check', response)
-            //     this.checkCartLength();
-            // });
+        // .then((response) => {
+        //     console.log('length check', response)
+        //     this.checkCartLength();
+        // });
         this.$store.dispatch('LoggedInUserStore/fetchAddresses');
     },
     methods: {
