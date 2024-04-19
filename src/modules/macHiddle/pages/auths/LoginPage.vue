@@ -4,7 +4,7 @@
             <div class="pt-2 col-md-6 d-flex flex-column justify-content-center align-items-center">
                 <routerLink to="/" class=" rounded-circle d-flex justify-content-center"
                     style="height: 150px; width: 150px;background: linear-gradient(90deg, rgba(35,31,32,1) 0%, rgba(32,23,25,0.9417016806722689) 100%);">
-                    <img :src="`${publicPath}${logo}`" style="width: 100%; object-fit: contain;">
+                    <img :src="`${publicPath}${logo}`" alt="user" style="width: 100%; object-fit: contain;">
                 </routerLink>
             </div>
             <div class="container d-flex flex-column justify-content-center col-md-6 bg-light pt-2">

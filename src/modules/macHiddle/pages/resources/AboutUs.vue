@@ -3,12 +3,12 @@
         <div class="w-100">
             <div class="position-relative">
                 <div class="pb-5 d-flex justify-content-center ali" style="height: 400px; color: var(--secondary-color);">
-                    <img src="https://wallpapercave.com/wp/wp10271263.jpg" width="100%" style="object-fit: cover;" alt="">
+                    <img src="https://wallpapercave.com/wp/wp10271263.jpg" width="100%" style="object-fit: cover;" alt="wallpaper">
                 </div>
                 <div class=" d-flex justify-content-start align-items-center position-relative ps-3 " style=" top:-90px;">
-                    <img src="img/logo/MacHiddle.png" class="border border-5 border-white rounded-4 d-lg-block d-none"
+                    <img src="img/logo/MacHiddle.png" alt="Brand logo" class="border border-5 border-white rounded-4 d-lg-block d-none"
                         style="max-width: 15%;">
-                    <img src="img/logo/MacHiddle.png" class="border border-5 border-white rounded-4 d-lg-none d-block"
+                    <img src="img/logo/MacHiddle.png" alt="Brand Logo" class="border border-5 border-white rounded-4 d-lg-none d-block"
                         style="max-width: 40%;">
                     <div class="d-lg-none d-block mt-5">
                         <p class=" mb-0 ms-1 fw-bold fs-4" style=" color: var(--secondary-color); letter-spacing: 6px">MAC

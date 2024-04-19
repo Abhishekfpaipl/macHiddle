@@ -3,7 +3,7 @@
         <div class="w-100 overflow-auto d-flex align-items-center hide-scroll" ref="slider">
             <div v-for="(review, index) in infiniteReviews" :key="index" @click="showUser(review, index)"
                 class="btn rounded-circle m-2 mx-3 d-flex" :class="{ selectedDiv: isSelected(review.id) }">
-                <img :src="review.imgr" alt="User Image">
+                <img :src="review.imgr" :alt="review.name">
             </div>
         </div>
 

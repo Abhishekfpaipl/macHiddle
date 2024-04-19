@@ -58,7 +58,7 @@
                 <div v-for="(order, index) in filteredOrders" :key="index">
                     <div class="border p-1 mb-2">
                         <router-link :to="'/orders/detail/' + order.sid" class="d-flex text-decoration-none text-dark">
-                            <img :src="order.product.option.primary_image" class=""
+                            <img :src="order.product.option.primary_image" :alt="order.product.name" class=""
                                 style="height:135px; width: auto;object-fit: fill;">
 
                             <div class="d-flex flex-column justify-content-between w-100">

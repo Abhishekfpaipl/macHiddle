@@ -3,7 +3,7 @@
         <div class="d-md-flex flex-column-sm justify-content-evenly py-4 px-3  ">
             <div class="mb-3 text-center">
                 <router-link to="/">
-                    <img :src="`${publicPath}${img}`" style="width: 100px;object-fit: contain;">
+                    <img :src="`${publicPath}${img}`" alt="brand logo" style="width: 100px;object-fit: contain;">
                 </router-link>
                 <p class="mb-2 fw-bold" style="letter-spacing: 6px">MAC HIDDLE</p>
                 <p class="mb-2">Specially Crafted For Alpha Males</p>

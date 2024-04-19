@@ -8,7 +8,7 @@
                     <p class="mb-0 text-uppercase">{{ cat.title }}</p>
                 </div>
                 <div class="w-50 img">
-                    <img :src="`${publicPath}${cat.img}`" style="width: 100%;">
+                    <img :src="`${publicPath}${cat.img}`" :alt="cat.name" style="width: 100%;">
                 </div>
             </router-link>
         </div>
@@ -19,7 +19,7 @@
                 <div v-for="(cat, index) in categories" :key="index">
                     <router-link :to="'/catalogs/' + cat.name" class="text-decoration-none text-dark">
                         <div class="img" style="width: 400px;">
-                            <img :src="`${publicPath}${cat.img}`"  style="width: 100%; object-fit: cover;">
+                            <img :src="`${publicPath}${cat.img}`"  :alt="cat.name" style="width: 100%; object-fit: cover;">
                             <p class="text-center fs-2" :style="'background-color:' + cat.bgColor">{{ cat.name }}</p>
                         </div>
                     </router-link>

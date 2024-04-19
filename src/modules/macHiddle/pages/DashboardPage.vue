@@ -6,7 +6,7 @@
                 <div class="carousel-item" v-for="(banner, index) in banners" :key="index"
                     :class="{ active: index === 0 }" data-bs-interval="2000">
                     <img :src="banner.primary_image" class="" style="height: 400px; width: 100%; object-fit: cover;"
-                        :alt="banner.alt">
+                        :alt="banner.name">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#mobileCarousel" data-bs-slide="prev">
@@ -29,7 +29,7 @@
             <router-link to="/categories"
                 class="d-flex flex-column align-items-center px-2 text-decoration-none text-dark"
                 v-for="(category, index) in categories" :key="index">
-                <img :src="category.primary_image" class="rounded-circle"
+                <img :src="category.primary_image" :alt="category.name" class="rounded-circle"
                     style="width:80px; height: 80px; object-fit: cover;">
                 <strong>{{ category.name }}</strong>
             </router-link>

@@ -3,8 +3,9 @@
         <div class="row bg-light">
             <div class="col-lg-5 d-flex prod-img p-2">
                 <div class="d-flex flex-column ms-2 ms-md-0 prod-thumb" id="scroll">
-                    <img class="" :src="image.primary_image" style="width: 60px; object-fit: cover;"
-                        v-for="(image, index) in showProduct.options" :key="index" v-on:click="selectImage(image)" />
+                    <img class="" :src="image.primary_image"  style="width: 60px; object-fit: cover;"
+                        v-for="(image, index) in showProduct.options" :key="index" :alt="image.name"
+                        v-on:click="selectImage(image)" />
                 </div>
                 <div class="ms-md-2 flex-fill">
                     <div id="carouselExampleIndicators" class="carousel slide">
@@ -17,18 +18,18 @@
                             <div class="carousel-item" v-for="(image, index) in selectedImage" :key="index"
                                 :class="{ active: index === 0 }" data-bs-interval="2000">
                                 <img :src="image" class="" style="height: 500px; width: 400px; object-fit: cover;"
-                                    :alt="image.alt">
+                                    :alt="image.name">
                             </div>
                         </div>
                     </div>
-                    <!-- <img :src="selectedImage" class="" style="width: 100%; " /> -->
+                    <!-- <img :src="selectedImage" :alt="image.name" class="" style="width: 100%; " /> -->
                 </div>
             </div>
 
 
             <div class="col-lg-7 p-2">
                 <div class="bg-white p-2 mb-2">
-                    <p class="fs-5 my-2">{{ showProduct.name }}</p>
+                    <p class="fs-5 my-2" :title="showProduct.name">{{ showProduct.name }}</p>
                     <div class="d-flex justify-content-between align-items-center border-bottom pb-1">
                         <small v-if="showProduct.category" class="text-muted">{{ showProduct.category.parent }}</small>
                         <div class="d-flex gap-2">
@@ -72,7 +73,7 @@
                                 <label class="btn btn-outline-dark border-light rounded p-0 position-relative"
                                     :class="{ 'text-decoration-line-through': !color.active }"
                                     :for="'selectProductColor' + index">
-                                    <img class="rounded" :src="color.primary_image"
+                                    <img class="rounded" :src="color.primary_image" :alt="color.name"
                                         style="width:40px;height:40px; object-fit: none; margin: 0.05rem;" />
                                 </label>
                             </div>
@@ -126,7 +127,7 @@
                                                     class="btn btn-outline-dark border-light rounded p-0 position-relative"
                                                     :class="{ 'text-decoration-line-through': !color.active }"
                                                     :for="'selectProductColor' + index">
-                                                    <img class="rounded" :src="color.primary_image"
+                                                    <img class="rounded" :src="color.primary_image" :alt="color.name"
                                                         style="width:40px;height:40px; object-fit: none; margin: 0.05rem;" />
                                                 </label>
                                             </div>
@@ -287,8 +288,7 @@ import ShareOffcanvas from '@/modules/macHiddle/components/ShareOffcanvas.vue';
 import ProductBadge from '@/modules/macHiddle/components/ProductBadge.vue';
 // import ProductReviews from '@/modules/macHiddle/components/ProductReviews.vue';
 import YouMayLike from '@/modules/macHiddle/components/YouMayLike.vue';
-
-
+import { useHead } from '@vueuse/head'
 export default {
     name: 'ProductPage',
     components: {
@@ -321,6 +321,10 @@ export default {
     watch: {
         showProduct: {
             handler(newVal) {
+                if (newVal) {
+                    // Update the head metadata when 'showProduct' data changes
+                    this.updateHeadMetadata(newVal);
+                }
                 if (newVal && newVal.options && newVal.options.length > 0 && newVal.ranges && newVal.ranges.length > 0) {
                     // // Find the first active color
                     // const activeColor = newVal.options.find(color => color.active);
@@ -363,10 +367,87 @@ export default {
                 this.$store.dispatch('MacStore/fetchProduct', newProductId);
             },
             immediate: true // Trigger handler immediately
-        }
+        },
     },
-
+    // created() {
+    //     useHead({
+    //         title: this.showProduct.name, // Set the title of the page
+    //         meta: [ // Define meta tags
+    //             {
+    //                 name: 'og:title',
+    //                 content: this.showProduct.name // Example description
+    //             },
+    //             {
+    //                 name: 'og:description',
+    //                 content: this.showProduct.code // Example description
+    //             },
+    //             {
+    //                 property: 'og:image',
+    //                 content: this.selectedImage
+    //             },
+    //             {
+    //                 property: 'og:url',
+    //                 content: 'https://machiddle.com'
+    //             },
+    //             {
+    //                 property: 'og:type',
+    //                 content: 'website'
+    //             },
+    //             // Add more meta tags as needed
+    //         ]
+    //     });
+    // },
+    // metaInfo() {
+    //     return {
+    //         script: [{
+    //             type: 'application/ld+json',
+    //             json: this.jsonLd
+    //         }]
+    //     };
+    // }, 
+    // metaInfo() {
+    //     return {
+    //         title: 'test tests',
+    //         meta: [
+    //             {
+    //                 name: 'description',
+    //                 content: 'djdkjdkfjd'
+    //             },
+    //             // Add more meta tags as needed
+    //         ]
+    //     };
+    // },
+    // metaInfo() {
+    //     return {
+    //         title: this.showProduct.name,
+    //         meta: [
+    //             { name: 'description', content: `${this.showProduct.designer.name} ${this.showProduct.code} price Rs ${this.showProduct.price}` },
+    //             // Add more meta tags as needed
+    //         ]
+    //     };
+    // },
     computed: {
+        jsonLd() {
+            return {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": this.showProduct.name,
+                "image": this.selectedImage,
+                "description": `${this.showProduct.designer.name} ${this.showProduct.code} price Rs ${this.showProduct.price}`,
+            };
+        },
+        // metaInfo() {
+        //     return {
+        //         script: [{
+        //             type: 'application/ld+json',
+        //             json: this.jsonLd // Use the computed property for JSON-LD data
+        //         }],
+        //         meta: [
+        //             { name: 'description', content: `${this.showProduct.designer.name} ${this.showProduct.code} price Rs ${this.showProduct.price}` },
+        //             // Add more meta tags as needed
+        //         ]
+        //     };
+        // },
         showProduct() {
             return this.$store.getters['MacStore/getShowProduct']
         },
@@ -381,6 +462,20 @@ export default {
         },
     },
     methods: {
+        updateHeadMetadata(product) {
+            useHead({
+                title: product.name,
+                meta: [
+                    { name: 'description', content: product.description },
+                    { property: 'og:title', content: product.name },
+                    { property: 'og:description', content: product.code },
+                    { property: 'og:image', content: this.selectedImage },
+                    { property: 'og:url', content: 'https://machiddle.com' },
+                    { property: 'og:type', content: 'website' }
+                    // Add more meta tags as needed
+                ]
+            });
+        },
         calculateDiscountPercentage(mrp, price) {
             if (!mrp || !price || mrp <= price) {
                 return 0;

@@ -10,10 +10,10 @@
                 </router-link>
             </div>
             <router-link to="/" class="d-none d-lg-flex align-items-center text-decoration-none">
-                <img :src="`${publicPath}${img}`" style="width: 60px;object-fit: contain;">
+                <img :src="`${publicPath}${img}`" alt="Brand Lgo" style="width: 60px;object-fit: contain;">
             </router-link>
             <router-link to="/" class="d-flex d-lg-none align-items-center text-decoration-none">
-                <img :src="`${publicPath}${img}`" style="width: 50px;object-fit: contain;">
+                <img :src="`${publicPath}${img}`" alt="Brand Logo" style="width: 50px;object-fit: contain;">
             </router-link>
             <div class="d-flex">
                 <!-- <router-link to="/search-page" class="d-none d-md-block">
@@ -42,7 +42,7 @@
         <div class="offcanvas offcanvas-start" tabindex="-1" id="topSideMenu" aria-labelledby="topSideMenuLabel">
             <div class="offcanvas-header border-bottom" style="background-color: var(--secondary-color); ">
                 <div class="d-flex align-items-center">
-                    <img :src="`${publicPath}${img}`" style="width: 50px;object-fit: contain;">
+                    <img :src="`${publicPath}${img}`" alt="Brand Logo" style="width: 50px;object-fit: contain;">
                     <small class=" mb-0 ms-1 fw-bold" style=" color: var(--primary-color); letter-spacing: 2px">MAC
                         HIDDLE</small>
                 </div>

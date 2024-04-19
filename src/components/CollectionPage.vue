@@ -21,7 +21,7 @@
 
                 <div class="col-md-4 col-6 d-flex align-items-center "
                   :class="{ 'justify-content-end': collection.order === 0, 'justify-content-start': collection.order === 1 }">
-                  <img :src="collection.primary_image" class="img-fluid float-end" style="height: 150px;">
+                  <img :src="collection.primary_image" :alt="collection.name" class="img-fluid float-end" style="height: 150px;">
                 </div>
               </div>
             </div>
@@ -40,8 +40,8 @@
             </div>
           </div>
           <div class="col-6 col-lg-4">
-            <img :src="collection.primary_image" :class="{ 'float-end': collection.order === 0 }" class="img-fluid"
-              width="250" alt="">
+            <img :src="collection.primary_image" :alt="collection.name" :class="{ 'float-end': collection.order === 0 }" class="img-fluid"
+              width="250" >
           </div>
         </div>
       </div>

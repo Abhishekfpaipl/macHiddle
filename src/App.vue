@@ -9,8 +9,22 @@
 <script>
 import BottomNav from '@/modules/macHiddle/components/navbar/BottomNav.vue';
 import TopNav from '@/modules/macHiddle/components/navbar/TopNav.vue'
+// import { useHead } from '@vueuse/head'
 export default {
   name: 'E-comApp',
+  // created() {
+  //   useHead({
+  //     title: 'My Test App', // Set the title of the page
+  //     meta: [ // Define meta tags
+  //       {
+  //         name: 'description',
+  //         content: 'This is my test app' // Example description
+  //       },
+  //       // Add more meta tags as needed
+  //     ]
+  //   });
+  // },
+
   components: {
     BottomNav,
     TopNav,

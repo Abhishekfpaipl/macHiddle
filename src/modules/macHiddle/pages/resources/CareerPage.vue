@@ -69,7 +69,7 @@
                 <div class="p-2 row">
                     <div v-for="(data, index) in datas" :key="index" class="col-12 col-md-6 g-3">
                         <div class="d-flex align-items-center border p-2">
-                            <img :src="data.icon" style="width: 8%; filter: grayscale(1);" class="mx-3">
+                            <img :src="data.icon" :alt="data.name" style="width: 8%; filter: grayscale(1);" class="mx-3">
                             <div class=" ms-2">
                                 <span class="fw-bold">{{ data.heading }}</span>
                                 <p>{{ data.text }}</p>

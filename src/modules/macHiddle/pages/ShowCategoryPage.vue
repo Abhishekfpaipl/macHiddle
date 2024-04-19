@@ -1,10 +1,10 @@
 <template>
     <div class="mt-5 pt-3">
         <div class="d-md-none">
-            <img :src="banner" style="width: 100%;">
+            <img :src="banner" :alt="banner.name" style="width: 100%;">
         </div>
         <div class="d-none d-md-block">
-            <img :src="bannerDesk" style="width: 100%;">
+            <img :src="bannerDesk" :alt="banner.name" style="width: 100%;">
         </div>
 
         <div v-if="category.length > 0" class="container-fluid mt-2">

@@ -6,7 +6,7 @@
                     :data-bs-target="'#collapseCart' + product.id" aria-expanded="true"
                     :aria-controls="'collapseCart' + product.id">
                     <div class="d-flex ">
-                        <img :src="product.img" class="rounded-3"
+                        <img :src="product.img" class="rounded-3" :alt="product.name"
                             style="height:100px; max-width: 110px; object-fit: cover;">
 
                         <div class="d-flex flex-column justify-content-between">

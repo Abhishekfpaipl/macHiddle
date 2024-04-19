@@ -18,7 +18,7 @@
                 </div> -->
                 <div v-for="(cart, index) in cartProducts.products" :key="index" class="border">
                     <div class="d-flex p-2">
-                        <img class="rounded" v-if="cart.option" :src="cart.option.primary_image"
+                        <img class="rounded" :alt="cart.name" v-if="cart.option" :src="cart.option.primary_image"
                             style="height: 155px; width: 125px; object-fit: fill;">
                         <div class="d-md-flex justify-content-between ms-2 w-100">
                             <div class="">

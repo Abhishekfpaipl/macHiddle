@@ -2,7 +2,7 @@
     <div class="container p-0 mb-4">
         <div v-for="(product, index) in order.products" :key="index" class="border p-2 mb-2" @click="showProduct(product)">
             <div class="d-flex ">
-                <img :src="product.img" class="rounded-3" style="height:100px; width: 110px;object-fit: cover;">
+                <img :src="product.img" :alt="product.name" class="rounded-3" style="height:100px; width: 110px;object-fit: cover;">
 
                 <div class="d-flex flex-column justify-content-between">
                     <div class="ms-2 ">

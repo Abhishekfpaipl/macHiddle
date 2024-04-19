@@ -8,7 +8,7 @@
                             <div :id="'cardCarousel' + imgIndex" class="carousel-item"
                                 :class="{ active: imgIndex === 0 }" v-for="(image, imgIndex) in product.options"
                                 :key="imgIndex">
-                                <img :src="image.primary_image" class="card-img-top rounded-0" alt=""
+                                <img :src="image.primary_image" class="card-img-top rounded-0" :alt="image.name"
                                     style="min-height: 100px; object-fit: cover;">
                             </div>
                         </div>
@@ -17,7 +17,7 @@
                                 :data-bs-target="'#productImages' + index" :data-bs-slide-to="imgIndex"
                                 :class="{ active: imgIndex === 0 }" :aria-current="imgIndex === 0 ? true : false"
                                 v-for="(image, imgIndex) in product.options" :key="imgIndex">
-                                <img :src="image.primary_image" class="rounded" alt=""
+                                <img :src="image.primary_image" class="rounded" :alt="image.name"
                                     style="width: 35px; height: 35px; object-fit: fill;">
                             </button>
                         </div>

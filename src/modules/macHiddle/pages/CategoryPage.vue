@@ -30,7 +30,7 @@
                         <div class="col" v-for="(item, index) in category.childs" :key="index">
                             <router-link v-if="index < 6" :to="'/categories/' + item.sid"
                                 class="card-header text-decoration-none text-dark ">
-                                <img :src="item.primary_image" alt="" style="height:150px;width:100%;object-fit:cover;">
+                                <img :src="item.primary_image" :alt="item.name" style="height:150px;width:100%;object-fit:cover;">
                             </router-link>
                             {{ item.name }}
                         </div>

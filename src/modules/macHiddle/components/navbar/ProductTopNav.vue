@@ -9,7 +9,7 @@
         </div>
         <router-link to="/" :class="{ 'hide-on-scroll': hideOnScroll }"
             class="text-decoration-none d-flex align-items-center">
-            <img :src="`${publicPath}${logo}`" style="height: 50px;">
+            <img :src="`${publicPath}${logo}`" alt="Brand Logo" style="height: 50px;">
 
         </router-link>
          <div class="d-flex align-items-center gap-3">

@@ -36,7 +36,7 @@
         <router-link v-if="order.product" :to="'/product-page/' + order.product.sid"
             class="d-flex text-decoration-none text-dark">
             <img v-if="order.product && order.product.option" :src="order.product.option.primary_image" class=""
-                style="width: 125px;object-fit: fill;">
+            :alt="order.product.name" style="width: 125px;object-fit: fill;">
             <div class="ms-2">
                 <p class="fw-bold mb-0" v-if="order.product && order.product.name">{{
                     order.product.name

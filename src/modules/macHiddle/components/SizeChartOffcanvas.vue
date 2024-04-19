@@ -86,7 +86,7 @@
                 <div class="tab-pane fade" id="Measure-tab-pane" role="tabpanel" aria-labelledby="Measure-tab"
                     tabindex="0">
                     <div class="mt-2">
-                        <img :src="`${publicPath}${measureImg}`" style="width: 100%;">
+                        <img :src="`${publicPath}${measureImg}`" alt="Size Chart" style="width: 100%;">
                     </div>
                 </div>
 

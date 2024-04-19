@@ -9,7 +9,7 @@
                     </div>
                 </div>
                 <div class="col-6 col-lg-4">
-                    <img :src="banner.primary_image" :class="{ 'float-end': banner.order === 0 }" class="img-fluid" width="250" alt="">
+                    <img :src="banner.primary_image" :alt="banner.name" :class="{ 'float-end': banner.order === 0 }" class="img-fluid" width="250" alt="">
                 </div>
             </div>
         </div>

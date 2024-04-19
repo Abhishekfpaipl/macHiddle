@@ -4,11 +4,11 @@
         <div class="row bg-light">
             <div class="col-12 d-md-none d-flex prod-img">
                 <div class="d-flex flex-column prod-thumb" id="scroll">
-                    <img class="" :src="image.primary_image" style="width: 60px"
+                    <img class="" :src="image.primary_image" style="width: 60px" :alt="image.name"
                         v-for="(image, index) in showProduct.options" :key="index" v-on:click="selectImage(image)" />
                 </div>
                 <div class="ms-2 main-img">
-                    <img :src="selectedImage" class="flex-fill" style="width: 100%;" />
+                    <img :src="selectedImage"  :alt="image.name" class="flex-fill" style="width: 100%;" />
                 </div>
             </div>
 
@@ -16,7 +16,7 @@
                 <div class="row p-0" style="height: fit-content;">
                     <div v-for="(image, index) in showProduct.options" :key="index" class="col-6 p-0">
                         <div v-if="index < imgCount">
-                            <img :src="image.primary_image" class="flex-fill" style="width: 100%;height: 100%;"
+                            <img :src="image.primary_image" :alt="image.name" class="flex-fill" style="width: 100%;height: 100%;"
                                 data-bs-toggle="modal" data-bs-target="#imageGalleryModal" />
                         </div>
                         <div v-if="index === imgCount - 1" class="">
@@ -38,7 +38,7 @@
                                 <div class="carousel-inner">
                                     <div class="carousel-item" v-for="(image, index) in showProduct.options"
                                         :key="index" :class="{ active: index === selectedImageIndex }">
-                                        <img :src="image.primary_image" class="d-block w-100" alt="Image">
+                                        <img :src="image.primary_image" class="d-block w-100" :alt="image.name">
                                     </div>
                                 </div>
                                 <a class="carousel-control-prev" href="#carouselExample" role="button"
@@ -82,7 +82,7 @@
                                     v-model="currentColor">
                                 <label class="btn btn-outline-dark border-light rounded-circle p-0"
                                     :for="'selectProductColor' + index">
-                                    <img class="rounded-circle" :src="color.primary_image"
+                                    <img class="rounded-circle" :src="color.primary_image" :alt="image.name"
                                         style="width:40px;height:40px; object-fit: none; margin: 0.05rem;" />
                                 </label>
                             </div>
@@ -174,13 +174,13 @@
                             <div class="tab-pane fade" id="Fit-tab-pane" role="tabpanel" aria-labelledby="Fit-tab"
                                 tabindex="0">
                                 <div class="mt-2">
-                                    <img :src="img" style="width: 100%;">
+                                    <img :src="img" :alt="image.name" style="width: 100%;">
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="Measure-tab-pane" role="tabpanel"
                                 aria-labelledby="Measure-tab" tabindex="0">
                                 <div class="mt-2">
-                                    <img :src="measureImg" style="width: 100%;">
+                                    <img :src="measureImg" :alt="image.name" style="width: 100%;">
                                 </div>
                             </div>
 

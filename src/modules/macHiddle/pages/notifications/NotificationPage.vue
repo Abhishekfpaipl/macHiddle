@@ -177,7 +177,7 @@
                     <div class=" d-flex justify-content-between my-2 border p-2 text-dark">
                         <div class="d-flex flex-column">
                             <div class="d-flex">
-                                <img :src="`${publicPath}${logo}`" class="me-2 rounded"
+                                 alt="name" :src="`${publicPath}${logo}`" class="me-2 rounded"
                                     style="height:40px; width:40px;object-fit: contain; background-color: var(--secondary-color);">
                                 <div class="">
                                     <b class="mb-0 text-capitalize" style="font-size: 18px;">Hi, {{ user.name }},</b>
@@ -274,7 +274,7 @@
                     <div class=" d-flex justify-content-between my-2 border p-2 text-dark">
                         <div class="d-flex flex-column">
                             <div class="d-flex">
-                                <img :src="`${publicPath}${logo}`" class="me-2 rounded"
+                                <img alt="name" :src="`${publicPath}${logo}`" class="me-2 rounded"
                                     style="height:40px; width:40px;object-fit: contain; background-color: var(--secondary-color);">
                                 <div class="">
                                     <b class="mb-0 text-capitalize" style="font-size: 18px;">Hi, {{ user.name }},</b>
@@ -300,7 +300,7 @@
                     <div class=" d-flex justify-content-between my-2 border p-2 text-dark">
                         <div class="d-flex flex-column">
                             <div class="d-flex">
-                                <img :src="`${publicPath}${logo}`" class="me-2 rounded"
+                                <img alt="name" :src="`${publicPath}${logo}`" class="me-2 rounded"
                                     style="height:40px; width:40px;object-fit: contain; background-color: var(--secondary-color);">
                                 <div class="">
                                     <b class="mb-0 text-capitalize" style="font-size: 18px;">Hi, {{ user.name }},</b>

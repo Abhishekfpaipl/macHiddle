@@ -47,7 +47,7 @@
                     data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body">
                         <div v-if="product.designer" class="">
-                            <img :src="product.designer.image" style="height: 50px;width: 50px; object-fit: cover;">
+                            <img :src="product.designer.image" :alt="product.designer.name" style="height: 50px;width: 50px; object-fit: cover;">
                             <span class="ms-3 fw-bold text-capitalize">{{ product.designer.name }}</span>
                             <div class="my-2">{{ product.designer.details }} Lorem ipsum dolor sit amet consectetur adipisicing
                                 elit. Tenetur sit accusantium magnam doloremque. Omnis obcaecati quod ut cupiditate quo

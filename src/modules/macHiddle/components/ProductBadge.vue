@@ -4,7 +4,7 @@
             <div v-for="(badge, index) in badges" :key="index" class="col-4 col-md-6 col-lg-4 mb-3">
                 <div class="text-center">
                     <div style="min-height: 35px;">
-                        <img :src="badge.image" style="height: 80px;object-fit: cover;" class="rounded">
+                        <img :src="badge.image" :alt="badge.name" style="height: 80px;object-fit: cover;" class="rounded">
                     </div>
                     <p class="text-muted smaller mb-0">{{ badge.details }}</p>
                 </div>

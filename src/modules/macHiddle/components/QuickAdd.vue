@@ -12,7 +12,7 @@
                             <div :id="'cardCarousel' + imgIndex" class="carousel-item" data-bs-dismiss="modal"
                                 :class="{ active: imgIndex === 0 }" v-for="(image, imgIndex) in activeProduct.options"
                                 :key="imgIndex">
-                                <img :src="image.primary_image" class="card-img-top rounded-0" alt=""
+                                <img :src="image.primary_image" class="card-img-top rounded-0" :alt="image.name"
                                     style="max-height:300px;object-fit: contain; ">
                             </div>
                         </div>
@@ -21,7 +21,7 @@
                                 :data-bs-target="'#quickAdd' + activeProduct.sid" :data-bs-slide-to="imgIndex"
                                 :class="{ active: imgIndex === 0 }" :aria-current="imgIndex === 0 ? true : false"
                                 v-for="(image, imgIndex) in activeProduct.options" :key="imgIndex">
-                                <img :src="image.primary_image" class="rounded-circle" alt=""
+                                <img :src="image.primary_image" class="rounded-circle" :alt="image.name"
                                     style="width: 35px; height: 35px; object-fit: fill;">
                             </button>
                         </div>
@@ -48,7 +48,7 @@
                                     v-model="currentColor" checked>
                                 <label class="btn btn-outline-dark border-light rounded-circle p-0"
                                     :for="'selectProductColor' + index">
-                                    <img class="rounded-circle" :src="color.primary_image"
+                                    <img class="rounded-circle" :src="color.primary_image" :alt="color.name"
                                         style="width:40px;height:40px; object-fit: none; margin: 0.05rem;" />
                                 </label>
                                 <small>{{ color.name }}</small>

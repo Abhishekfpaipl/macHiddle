@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="d-flex mt-2 ">
-                            <img :src="product.img" class="" style="height:155px; width: 125px;object-fit: fill;">
+                            <img :src="product.img" :alt="product.name" class="" style="height:155px; width: 125px;object-fit: fill;">
 
                             <div class="d-flex flex-column justify-content-between w-100">
                                 <div class="ms-2 ">
@@ -107,7 +107,7 @@
                         <p class="mb-0">{{ activeOrderDetail.date }}</p>
                     </div>
                     <div class="d-flex border-bottom py-2">
-                        <img :src="activeOrderDetail.img" class="" style="height:155px; width: 125px;object-fit: fill;">
+                        <img :src="activeOrderDetail.img" :alt="activeOrderDetail.name" class="" style="height:155px; width: 125px;object-fit: fill;">
 
                         <div class="d-flex flex-column ms-2 ">
                             <b class="">{{ activeOrderDetail.name }}</b>

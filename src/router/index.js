@@ -4,12 +4,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*', // Wildcard route matching any path
     component: () => import("@/views/NotFound.vue")
-  },
-  {
-    path: '/placeholder',
-    name: 'LoadingPlaceholder',
-    component: () => import('@/modules/macHiddle/components/LoadingPlaceholder.vue')
-  },
+  }, 
   ...MacRouter
 ];
 
