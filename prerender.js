@@ -28,44 +28,14 @@ const axios = require('axios');
         }
 
         // Define your Vue.js app URL
-        const baseUrl = 'http://localhost:8081/';
-        // const baseUrl = 'https://app.machiddle.com/';
+        // const baseUrl = 'http://localhost:8081/';
+        const baseUrl = 'https://app.machiddle.com/';
 
         // Create 'dist' directory if it doesn't exist
         const distDirectory = path.join(__dirname, 'dist/products/');
         if (!fs.existsSync(distDirectory)) {
             fs.mkdirSync(distDirectory);
         }
-
-        // Loop through each product
-        // for (const product of products) {
-        //     const sid = product.sid; // Assuming 'sid' is the product SID
-        //     const route = `/product-page/${sid}`; // Construct the route using the product SID
-
-        //     // Construct the full URL of the product page
-        //     const url = baseUrl + route;
-
-        //     // Navigate to the product page
-        //     await page.goto(url, { waitUntil: 'networkidle0' });
-
-        //     // Get HTML content
-        //     const html = await page.content();
-
-        //     // Write HTML file
-        //     fs.writeFileSync(path.join(distDirectory, `${sid}.html`), html);
-
-        //     // Create meta file
-        //     const meta = {
-        //         title: product.name, // Use product name as title
-        //         description: product.description || '', // Use product description if available
-        //         // Add other meta properties as needed
-        //     };
-
-        //     // Write meta file
-        //     fs.writeFileSync(path.join(distDirectory, `${sid}.json`), JSON.stringify(meta, null, 2));
-        // }
-
-        // Your code before page navigation...
 
         // Loop through each product
         for (const product of products) {
@@ -94,8 +64,9 @@ const axios = require('axios');
 
                 // Create meta file
                 const meta = {
-                    title: product.name, // Use product name as title
-                    description: product.description || '', // Use product description if available
+                    title: product.name, // Use product name as title,
+                    price: product.price,
+                    description: product.details || '', // Use product description if available
                     // Add other meta properties as needed
                 };
 
@@ -118,3 +89,5 @@ const axios = require('axios');
         await browser.close();
     }
 })();
+
+

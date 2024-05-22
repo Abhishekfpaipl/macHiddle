@@ -6,7 +6,7 @@
                     <div style="min-height: 35px;">
                         <img :src="badge.image" :alt="badge.name" style="height: 80px;object-fit: cover;" class="rounded">
                     </div>
-                    <p class="text-muted smaller mb-0">{{ badge.details }}</p>
+                    <p class="text-muted smaller mb-0">{{ badge.name }}</p>
                 </div>
             </div>
         </div>

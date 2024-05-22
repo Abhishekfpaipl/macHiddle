@@ -1,2 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: /search
+allow:*
+sitemap: https://app.machiddle.com/sitemap.xml

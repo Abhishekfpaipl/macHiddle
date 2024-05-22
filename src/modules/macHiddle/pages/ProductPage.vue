@@ -3,7 +3,7 @@
         <div class="row bg-light">
             <div class="col-lg-5 d-flex prod-img p-2">
                 <div class="d-flex flex-column ms-2 ms-md-0 prod-thumb" id="scroll">
-                    <img class="" :src="image.primary_image"  style="width: 60px; object-fit: cover;"
+                    <img class="" :src="image.primary_image" style="width: 60px; object-fit: cover;"
                         v-for="(image, index) in showProduct.options" :key="index" :alt="image.name"
                         v-on:click="selectImage(image)" />
                 </div>
@@ -369,85 +369,7 @@ export default {
             immediate: true // Trigger handler immediately
         },
     },
-    // created() {
-    //     useHead({
-    //         title: this.showProduct.name, // Set the title of the page
-    //         meta: [ // Define meta tags
-    //             {
-    //                 name: 'og:title',
-    //                 content: this.showProduct.name // Example description
-    //             },
-    //             {
-    //                 name: 'og:description',
-    //                 content: this.showProduct.code // Example description
-    //             },
-    //             {
-    //                 property: 'og:image',
-    //                 content: this.selectedImage
-    //             },
-    //             {
-    //                 property: 'og:url',
-    //                 content: 'https://machiddle.com'
-    //             },
-    //             {
-    //                 property: 'og:type',
-    //                 content: 'website'
-    //             },
-    //             // Add more meta tags as needed
-    //         ]
-    //     });
-    // },
-    // metaInfo() {
-    //     return {
-    //         script: [{
-    //             type: 'application/ld+json',
-    //             json: this.jsonLd
-    //         }]
-    //     };
-    // }, 
-    // metaInfo() {
-    //     return {
-    //         title: 'test tests',
-    //         meta: [
-    //             {
-    //                 name: 'description',
-    //                 content: 'djdkjdkfjd'
-    //             },
-    //             // Add more meta tags as needed
-    //         ]
-    //     };
-    // },
-    // metaInfo() {
-    //     return {
-    //         title: this.showProduct.name,
-    //         meta: [
-    //             { name: 'description', content: `${this.showProduct.designer.name} ${this.showProduct.code} price Rs ${this.showProduct.price}` },
-    //             // Add more meta tags as needed
-    //         ]
-    //     };
-    // },
     computed: {
-        jsonLd() {
-            return {
-                "@context": "https://schema.org/",
-                "@type": "Product",
-                "name": this.showProduct.name,
-                "image": this.selectedImage,
-                "description": `${this.showProduct.designer.name} ${this.showProduct.code} price Rs ${this.showProduct.price}`,
-            };
-        },
-        // metaInfo() {
-        //     return {
-        //         script: [{
-        //             type: 'application/ld+json',
-        //             json: this.jsonLd // Use the computed property for JSON-LD data
-        //         }],
-        //         meta: [
-        //             { name: 'description', content: `${this.showProduct.designer.name} ${this.showProduct.code} price Rs ${this.showProduct.price}` },
-        //             // Add more meta tags as needed
-        //         ]
-        //     };
-        // },
         showProduct() {
             return this.$store.getters['MacStore/getShowProduct']
         },
@@ -466,11 +388,11 @@ export default {
             useHead({
                 title: product.name,
                 meta: [
-                    { name: 'description', content: product.description },
+                    { name: 'description', content: product.details },
                     { property: 'og:title', content: product.name },
                     { property: 'og:description', content: product.code },
                     { property: 'og:image', content: this.selectedImage },
-                    { property: 'og:url', content: 'https://machiddle.com' },
+                    { property: 'og:url', content: 'https://machiddle.com/product-page/' + this.productId },
                     { property: 'og:type', content: 'website' }
                     // Add more meta tags as needed
                 ]

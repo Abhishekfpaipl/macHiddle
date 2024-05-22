@@ -61,7 +61,7 @@ import YouMayLike from '@/modules/macHiddle/components/YouMayLike.vue';
 // import SectionCard from '@/modules/macHiddle/components/sections/SectionCard.vue';
 // import HomeCategory from '@/modules/macHiddle/components/sections/HomeCategory.vue';
 import FooterBar from '@/modules/macHiddle/components/navbar/FooterBar.vue';
-
+import axios from 'axios';
 export default {
     name: "DashboardPage",
     components: {
@@ -74,7 +74,8 @@ export default {
     data() {
         return {
             publichPath: process.env.BASE_URL,
-            banner: 'img/banner.png'
+            banner: 'img/banner.png',
+            data: null,
         }
     },
     mounted() {
@@ -82,7 +83,10 @@ export default {
         this.$store.dispatch('MacStore/fetchCategories')
         this.subscribeForNotifications()
         this.getNoti()
-
+        axios.get('https://server.wsg-brand.in/api/sitemap')
+            .then((response) => {
+                this.data = response.data.data
+            })
     },
     computed: {
         banners() {

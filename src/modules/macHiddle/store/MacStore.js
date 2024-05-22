@@ -1,5 +1,5 @@
 import axiosInstance from "../axiosInstance";
-import router from '@/router';
+import router from '@/router/index.js';
 import sweetAlert from "../mixins/sweet-alert";
 export default {
     namespaced: true,
